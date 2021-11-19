@@ -5,7 +5,7 @@ def on_request(frame):
 	if '_module' in frame.data and frame.data['_module'] == 'sysinfo':
 		yield {
 			'sysinfo' : {
-				'version' : 'v0.1',
+				'version' : 'v1',
 				'licence' : 'free'
 			}
 		}

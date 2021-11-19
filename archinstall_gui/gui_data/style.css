@@ -1,17 +1,17 @@
 :root {
-	--bg: #F6F9FC;
+	--bg: #000000;
 	--dark: #333333;
-	--blue: #0088CC;
-	--blueLogo: #1487BD;
-	--light-blue: #33aadd;
-	--light-blue-border: #0088bb;
+	--blue: #3D3DA4;
+	--blueLogo: #3D3DA4;
+	--light-blue: #3D3DA4;
+	--light-blue-border: #3D3DA4;
 
-	--links: #666666;
+	--links: #3D3DA4;
 	--links-hover: #FFFFFF;
 
-	--light-grey: #ecf2f5;
-	--light-grey-darker: #D4E1E8;
-	--light-grey-border: #bcd;
+	--light-grey: #fff;
+	--light-grey-darker: #ddd;
+	--light-grey-border: #000;
 
 	--complete: #8CBEB2;
 	--error: #F06060;
@@ -62,7 +62,7 @@ body {
 	}
 
 .menu {
-	background-color: var(--dark);
+	background-color: #000;
 	padding: 15px;
 	display: flex;
 	flex-direction: row;

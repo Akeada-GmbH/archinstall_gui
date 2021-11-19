@@ -4,9 +4,9 @@
 		<link rel="stylesheet" href="./style.css">
 		<link rel="icon" type="image/png" href="./arch_linux_icon.png">
 		<script type="text/javascript" src="./slimWebSocket/slimWebSocket.js"></script>
-		<title>Archinstall GUI</title>
+		<title>PrivaStick Installer</title>
 		<script type="text/javascript">
-			let startpage = 'arch_linux';
+			let startpage = 'willkommen';
 			let reboot_step = 'accounts'; //# This changes depending on what buttons you press "save" on.
 
 			let socket = new slimWebSocket('ws://127.0.0.1');
@@ -35,7 +35,7 @@
 			script.type = 'text/javascript';
 
 			function sysinfo(data) {
-				document.querySelector('#adderall_version').innerHTML = `installer ${data['sysinfo']['version']}`;
+				document.querySelector('#adderall_version').innerHTML = `${data['sysinfo']['version']}`;
 				return true;
 			}
 
@@ -43,24 +43,6 @@
 				socket.send({
 					'_module' : 'reboot'
 				})
-			}
-
-			function sortSelect(selElem) {
-				var tmpAry = new Array();
-				for (var i=0;i<selElem.options.length;i++) {
-					tmpAry[i] = new Array();
-					tmpAry[i][0] = selElem.options[i].text;
-					tmpAry[i][1] = selElem.options[i].value;
-				}
-				tmpAry.sort();
-				while (selElem.options.length > 0) {
-					selElem.options[0] = null;
-				}
-				for (var i=0;i<tmpAry.length;i++) {
-					var op = new Option(tmpAry[i][0], tmpAry[i][1]);
-					selElem.options[i] = op;
-				}
-				return;
 			}
 
 			function listModules(data) {
@@ -146,43 +128,6 @@
 				return true;
 			}
 
-			function popup(information) {
-				let frame = document.createElement('div');
-				let frameContent = document.createElement('div');
-				frame.id = 'popup';
-				frame.classList = 'popup';
-				frameContent.classList = 'popupBody'
-
-				let header = document.createElement('div');
-				header.classList = 'noteHeader';
-				
-				let headerIcon = document.createElement('div');
-				headerIcon.classList = 'noteIcon';
-				let headerText = document.createElement('span');
-				headerText.innerHTML = 'Notification';
-
-				let content = document.createElement('div');
-				content.classList = 'noteBody';
-				if (typeof information == "string")
-					content.innerHTML = information;
-				else
-					content.appendChild(information)
-
-				frame.appendChild(frameContent);
-				frameContent.appendChild(header);
-				header.appendChild(headerIcon);
-				header.appendChild(headerText);
-				frameContent.appendChild(content);
-
-				document.body.appendChild(frame);
-				frame.addEventListener('click', (event) => {
-					if(event.target == frame) // event.path[0]?
-						frame.remove();
-				})
-
-				return frame;
-			}
-
 			function notification(data) {
 				console.log('Notification:', data)
 				if (typeof data['source'] !== 'undefined' && typeof data['status'] !== 'undefined') {
@@ -201,17 +146,6 @@
 					} else {
 						activity.innerHTML = '';
 					}
-
-					if (['complete', 'success', 'done'].includes(data['status']) && data['source'] == reboot_step) {
-						notification({
-							'type' : 'notification',
-							'source' : 'arch_linux',
-							'message' : '<div class="balloon">Installation complete, click here to <b class="reboot" onClick="reboot();">reboot</b> when you\'re done</div>',
-							'sticky' : true,
-							'status' : 'complete'
-						})
-						popup('<div class="balloon">Installation complete, click here to <b class="reboot" onClick="reboot();">reboot</b> when you\'re done</div>')
-					}
 				}
 
 				if(typeof data['message'] !== 'undefined')
@@ -219,6 +153,7 @@
 
 				if(typeof data['next'] !== 'undefined')
 					socket.send({'_module' : 'installation_steps/'+data['next']});
+
 
 				/*
 				if(typeof data['sticky'] !== 'undefined') {
@@ -280,15 +215,20 @@
 				socket.subscribe('listModules', listModules)
 				socket.subscribe('notification', notification)
 
-				socket.subscribe('harddrive', genericStepLoader)
-				socket.subscribe('encryption', genericStepLoader)
-				socket.subscribe('mirrors', genericStepLoader)
-				socket.subscribe('arch_linux', genericStepLoader) // Doesn't have a step currently. Just acts as a notification when the OS is being installed.
-				socket.subscribe('language', genericStepLoader)
-				socket.subscribe('profiles', genericStepLoader)
-				socket.subscribe('applications', genericStepLoader)
-				socket.subscribe('accounts', genericStepLoader)
-				socket.subscribe('aur_packages', genericStepLoader)
+				socket.subscribe('willkommen', genericStepLoader)
+				socket.subscribe('internet', genericStepLoader)
+				socket.subscribe('vpn', genericStepLoader)
+				socket.subscribe('profil', genericStepLoader)
+
+				//socket.subscribe('harddrive', genericStepLoader)
+				//socket.subscribe('encryption', genericStepLoader)
+				//socket.subscribe('mirrors', genericStepLoader)
+				//socket.subscribe('arch_linux', genericStepLoader) // Doesn't have a step currently. Just acts as a notification when the OS is being installed.
+				//socket.subscribe('language', genericStepLoader)
+				//socket.subscribe('profiles', genericStepLoader)
+				//socket.subscribe('applications', genericStepLoader)
+				//socket.subscribe('accounts', genericStepLoader)
+				//socket.subscribe('aur_packages', genericStepLoader)
 
 				// Two special cases, install_log being at the end if AUR_support to show what's going on.
 				// and mirrorlist is a special event from the mirrors-step (TODO: Some how get this away and into the mirrors step itself)
@@ -298,30 +238,31 @@
 				socket.send({"_module" : "sysinfo"});
 				socket.send({"_module" : "listModules"});
 			}
+
 		</script>
 	</head>
 	<body>
 		<div class="container rows">
 			<div class="menu">
 				<div class="logo">
-					Arch<span>Linux</span><span class="version" id="adderall_version">installer {version}</span>
+					Priva<span>Stick</span><span class="version" id="adderall_version">{version}</span>
 				</div>
 				<div class="status">
 				</div>
 				<div class="menu_buttons">
-					<button class="active">Steps</button>
-					<button onClick="show_install_log();">Install log</button>
+					<!--<button class="active">Menü</button>-->
+					<button onClick="show_install_log();">Log</button>
 				</div>
 			</div>
 			<div id="content" class="content">
 				<div class="sidemenu">
-					<div class="header">Installation Steps</div>
+					<div class="header">Installation</div>
 					<div class="entries" id="modules">
 						<div class="loading">
 							<div class="loader">
 								<div class="loader_image rotating"></div>
 							</div>
-							<span>Loading pre-configured steps..</span>
+							<span>Loading...</span>
 						</div>
 					</div>
 				</div>
