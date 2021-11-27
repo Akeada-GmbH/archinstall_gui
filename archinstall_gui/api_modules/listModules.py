@@ -8,7 +8,7 @@ def on_request(frame):
 			'modules' : oDict({
 				'Willkommen' : {'required' : False, 'defaults' : {}},
 				'Internet' : {'required' : True, 'defaults' : {}},
-				'VPN' : {'required' : False, 'defaults' : {}},
+				'VPN' : {'required' : True, 'defaults' : {}},
 				#'Harddrive' : {'required' : True, 'defaults' : {}},
 				#'Encryption' : {'required' : True, 'defaults' : {}},
 				#'Mirrors' : {'required' : True, 'defaults' : {}},

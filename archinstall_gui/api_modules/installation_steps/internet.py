@@ -165,6 +165,14 @@ def strap_in_the_basics(frame, drive, worker, hostname='Archnistall', *args, **k
 
 def on_request(frame):
     if '_module' in frame.data and frame.data['_module'] == 'installation_steps/internet':
+        if 'skip' in frame.data:
+            #session.steps['profiles'] = spawn(frame, stub, dependency='vpn')
+            session.steps['internet'] = True
+            yield {
+                '_modules' : 'internet',
+                'status' : 'complete',
+                'next' : 'vpn'
+            }
         if not 'hardware' in frame.data and 'format' not in frame.data:
             yield {
                 'html' : html,

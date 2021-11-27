@@ -72,14 +72,29 @@ html = """
 ## Needs to be loaded this way, since we can't inject JS into divs etc in the HTML above.
 javascript = """
 
-document.querySelector('#skip_step').addEventListener('click', function() {
-	reboot_step = 'language';
-	
-	socket.send({
-		'_module' : 'installation_steps/internet',
-		'skip' : true
-	})
-})
+window.checkInternetConnection = () => {
+    var isOnLine = navigator.onLine;
+    if (isOnLine) {
+        document.querySelector('#skip_step').addEventListener('click', function() {
+            socket.send({
+                '_module' : 'installation_steps/internet',
+                'skip' : true,
+                'dependencies' : ['vpn']
+            })
+        })
+    } else {
+        document.querySelector('#skip_step').addEventListener('click', function() {
+            console.log("test") 
+            socket.send({
+                '_module' : 'installation_steps/internet',
+            })
+        })
+    }
+
+}
+
+window.onload = window.checkInternetConnection();
+
 
 
 """
