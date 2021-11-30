@@ -58,9 +58,10 @@ html = """
 <br>
 <br>
 
-<div class="js-video [vimeo, widescreen]">
-  <iframe src="https://player.vimeo.com/video/574111364?embedparameter=value" width="640" height="360" frameborder="100" allowfullscreen></iframe>
-</div>
+<div class='embed-container' style='padding-top:100px;'>
+  <iframe src='https://player.vimeo.com/video/574111364' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+  </div>
+
 
 <div class="buttons bottom" id="buttons">
 		<button id="skip_step">Weiter</button>

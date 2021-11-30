@@ -87,13 +87,26 @@ if 'internet' in session.steps:
         </div>
         -->
 
-        <div class="buttons bottom">
-            <button id="create_user">VPN Verbindung herstellen</button>
-            <button id="skip_accounts">Überspringen</button>
-			<button id="skipButton">Don't use disk encryption</button>
-        </div>
+                <div style="padding-top:100px;text-align:right;"><div style="min-height:360px;"><div style="width:100%;height:0;padding-bottom:50%;position:relative;"><iframe style="border:none;position:absolute;top:0;left:0;width:100%;height:100%;min-height:360px;border:none;overflow:hidden !important;" src="https://www.metercustom.net/plugin/?hl=de"></iframe></div></div>Anbieter <a href="https://www.geschwindigkeit.de">Geschwindigkeit.de</a></div>
+
+        <div class="buttons bottom" style="padding-top:50px;">
+                <button id="skip_accounts">Überspringen</button>
+                <button id="create_user">Verbinden</button>
+            </div>
     </div>
+
 	"""
+elif 'vpn' in session.steps:
+	html = """
+	<div class="padded_content flex_grow flex column">
+		<div class="warning">
+			<div class="warningHeader"><div class="noteIcon"></div><span>Warnung</span></div>
+			<div class="noteBody">
+                Bitte klicken Sie auf den Start-Button um einen Internet-Geschwindigkeitstest durchzuführen.
+			</div>
+		</div>
+    </div>
+"""
 else:
 	html = """
 	<div class="padded_content flex_grow flex column">
