@@ -6,7 +6,8 @@
 	--light-blue: #3D3DA4;
 	--light-blue-border: #3D3DA4;
 
-	--links: #3D3DA4;
+	// --links: #3D3DA4;
+	// --links: #FFF;
 	--links-hover: #FFFFFF;
 
 	--light-grey: #fff;
@@ -21,6 +22,8 @@
 	--queued: #fca130;
 	--skipped: #666666;
 }
+
+.no-click {pointer-events: none;}
 
 .embed-container { 
   position: relative; 
@@ -52,10 +55,16 @@
 
 body {
 	background-color: var(--bg);
+  background-image: url('background.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 	margin: 0px;
 	padding: 0px;
-	font: normal 100% sans-serif;
-	font-family: sans-serif!important;
+	font: normal 100% montserrat;
+	font-family: montserrat!important;
+	min-width: 60%;
 }
 
 .reboot {
@@ -90,7 +99,9 @@ body {
 	}
 
 .menu {
+	font: normal 100% montserrat;
 	background-color: #000;
+	opacity: 0.5;
 	padding: 15px;
 	display: flex;
 	flex-direction: row;
@@ -151,10 +162,29 @@ body {
 		color: var(--blue);
 	}
 
+.margin-left{
+    margin-left: 80px !important;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #3D3DA4;
+}
+
 	.buttons {
-		display: flex;
-		flex-direction: column;
-		margin-top: 5px;
+  background-color: #0087FF;
+  border: none;
+  color: white;
+	border-radius: 12px;
+	padding-left: 50px;
+	padding-right: 50px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	max-width: 90px;
+	display: flex;
+	flex-direction: column;
+	margin-top: 5px;
 	}
 
 
@@ -169,7 +199,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	margin: 10px;
-	min-width: 160px;
+	min-width: 270px;
 
 	background-color: var(--light-grey);
 	border: 1px solid var(--light-grey-border);
@@ -275,6 +305,8 @@ body {
 	}
 
 	.entry > button {
+		font: normal 100% montserrat;
+		font-family: montserrat!important;
 		flex-grow: 1;
 		border: 0px;
 		background: transparent;
@@ -422,7 +454,9 @@ body {
 		.entry > button:hover {
 			color: var(--blue);
 			cursor: pointer;
+			color: #000;
 			background-color: var(--links-hover) !important;
+
 		}
 
 		.entry.button {
@@ -713,6 +747,7 @@ body {
 	height: 100%;
 	pointer-events: none;
 	border-bottom: 1px solid #595f6e;
+	top: -1px;
 	color: #595f6e;
 }
 
@@ -724,6 +759,7 @@ body {
 		height: 100%;
 		width: 100%;
 		border-bottom: 3px solid #33aadd;
+		top: 1px;
 		transform: translateX(-100%);
 		transition: transform 0.3s ease;
 	}

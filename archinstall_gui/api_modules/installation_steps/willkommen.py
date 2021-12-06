@@ -5,11 +5,11 @@ from os.path import isdir, isfile, abspath
 from time import time
 
 html = """
-<div class="padded_content flex_grow flex column">
-	<h3>Willkommen beim <i>PrivaStick Installationsassistent</i>!</h3>
+<div class="padded_content flex_grow flex column" style="min-width:100%;">
+	<h3><b>WILLKOMMEN ZUR PRIVASTICK INSTALLATION</b></h3>
 	
 	<span>
-    Der Setup-Prozess richtet Ihren <b>PrivaStick</b> in nur wenigen Schritten für Sie ein...
+    BITTE SEHEN SIE SICH DAS VIDEO AN, WELCHES ERKLÄRT, WIE DIE INSTALLATION ABLÄUFT UND WAS SIE VOR DER INSTALLATION BEACHTEN SOLLTEN.
 	</span>
 
     <!--
@@ -51,53 +51,40 @@ html = """
 
 <!-- <video id="player" width="350" height="250" preload="none" controls>      <source id="video-src">   </video> -->
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-<div class='embed-container' style='padding-top:100px;'>
+<div class='embed-container' style='padding-top:100px;max-height:40%; padding-top=100px;'>
   <iframe src='https://player.vimeo.com/video/574111364' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
   </div>
 
-
-<div class="buttons bottom" id="buttons">
-		<button id="skip_step">Weiter</button>
+    <div class="note">
+        <div class="noteHeader"><div class="noteIcon"></div><span>Hinweis</span></div>
+        <div class="noteBody">
+            <b>Folgende Daten sollten Sie für die Erstinstallation bereithalten</b>
+            <ul>
+            <li>WLAN Zugangsdaten</li>
+            <li>PrivaVPN Zugangsdaten</li>
+            <li>Blatt und Stift zum Notieren Ihres Passworts</li>
+            </ul>
+        </div>
     </div>
+
+</div>
+
+<div class="form-group" style="padding-left:10px; padding-right:10px;">
+    <button id="skip_step" class="btn btn-primary btn-lg float-right"
+            type="submit">
+         Weiter
+    </button>
 </div>
 """
 
 ## TODO:
 ## Needs to be loaded this way, since we can't inject JS into divs etc in the HTML above.
 javascript = """
-
-window.checkInternetConnection = () => {
-    var isOnLine = navigator.onLine;
-    if (isOnLine) {
-        document.querySelector('#skip_step').addEventListener('click', function() {
-            socket.send({
-                '_module' : 'installation_steps/internet',
-                'skip' : true,
-                'dependencies' : ['vpn']
-            })
-        })
-    } else {
-        document.querySelector('#skip_step').addEventListener('click', function() {
-            console.log("test") 
-            socket.send({
-                '_module' : 'installation_steps/internet',
-            })
-        })
-    }
-
-}
-
-window.onload = window.checkInternetConnection();
-
-
-
+document.querySelector('#skip_step').addEventListener('click', function() {
+    socket.send({
+        '_module' : 'installation_steps/rechtliches',
+    })
+})
 """
 
 def on_request(frame):
@@ -105,5 +92,5 @@ def on_request(frame):
 		yield {
 			'html' : html,
 			'javascript' : javascript,
-			'_modules' : 'internet'
+			'_modules' : 'vpn'
 		}

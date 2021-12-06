@@ -6,25 +6,40 @@ from lib.worker import spawn
 import session
 
 html = """
-<div class="padded_content flex_grow flex column">
-    <h3>Bitte wählen Sie ein Profil aus.</h3>
-
+<div class="padded_content flex_grow flex column" style="min-width: 100%;">
+    <h3><b>INSTALLATION DER PROGRAMME</b></h3>
+		<span>BITTE WÄHLEN SIE IN DIESEM SCHRITT IHR GEWÜNSCHTES APPL-PROFIL AUS.</span>
+		<!--
     <div class="note">
         <div class="noteHeader"><div class="noteIcon"></div><span>Hinweis</span></div>
         <div class="noteBody">
-            <!--The official Arch Installer documentation has more in-depth information regarding <a target="_blank" href="https://archinstaller.readthedocs.io/en/latest/">profiles & templates</a>.-->
-            blubb.
+            The official Arch Installer documentation has more in-depth information regarding <a target="_blank" href="https://archinstaller.readthedocs.io/en/latest/">profiles & templates</a>.
         </div>
     </div>
-
+		-->
+		<br>
+		<br>
+		<br>
+		<br>
     <select id="templatelist" size="3" class="flex_grow">
 
     </select>
 
-    <div class="buttons bottom">
+    <!--<div class="buttons bottom">
         <button id="save_templates">Installieren</button>
         <button id="skip_templates">Überspringen</button>
-    </div>
+    </div>-->
+</div>
+
+<div class="form-group" style="padding-left:10px; padding-right:10px;">
+    <button id="back_step" class="btn btn-primary btn-lg"
+            type="submit">
+          Zurück
+    </button>
+    <button id="save_templates" class="btn btn-primary btn-lg float-right"
+            type="submit">
+         Installieren
+    </button>
 </div>
 """
 
@@ -34,17 +49,19 @@ javascript = """
 
 document.querySelector('#save_templates').addEventListener('click', function() {
     socket.send({
-        '_module' : 'installation_steps/profil',
+        '_module' : 'installation_steps/apps',
         'template' : document.querySelector('#templatelist').value
     })
 })
 
+/*
 document.querySelector('#skip_templates').addEventListener('click', function() {
     socket.send({
-        '_module' : 'installation_steps/profil',
+        '_module' : 'installation_steps/apps',
         'skip' : true
     })
 })
+*/
 
 window.refresh_template_list = () => {
     let templatelist_dropdown = document.querySelector('#templatelist');
@@ -53,7 +70,8 @@ window.refresh_template_list = () => {
         let template_info = window.templates[template];
         let option = document.createElement('option');
         option.value = template;
-        option.innerHTML = template + ' (' + template_info['description'] + ')';
+        // option.innerHTML = template + ' (' + template_info['description'] + ')';
+        option.innerHTML = template.replace('_',' ');
 
         templatelist_dropdown.appendChild(option);
     })
@@ -70,7 +88,7 @@ window.update_templtes = (data) => {
 if(socket.subscriptions('templates') != 2)
     socket.subscribe('templates', update_templtes);
 
-socket.send({'_module' : 'installation_steps/profil', 'templates' : 'refresh'})
+socket.send({'_module' : 'installation_steps/apps', 'templates' : 'refresh'})
 
 """
 
@@ -78,7 +96,7 @@ socket.send({'_module' : 'installation_steps/profil', 'templates' : 'refresh'})
 def notify_template_started(worker, *args, **kwargs):
     worker.frame.CLIENT_IDENTITY.send({
         'type' : 'notification',
-        'source' : 'profil',
+        'source' : 'apps',
         'message' : 'Template is being installed',
         'status' : 'active'
     })
@@ -86,7 +104,7 @@ def notify_template_started(worker, *args, **kwargs):
 def notify_template_installed(worker, *args, **kwargs):
     worker.frame.CLIENT_IDENTITY.send({
         'type' : 'notification',
-        'source' : 'profil',
+        'source' : 'apps',
         'message' : 'Template has been installed.',
         'status' : 'complete'
     })
@@ -99,11 +117,11 @@ def stub(*args, **kwargs):
 
 def on_request(frame):
     print(frame.data)
-    if '_module' in frame.data and frame.data['_module'] == 'installation_steps/profil':
+    if '_module' in frame.data and frame.data['_module'] == 'installation_steps/apps':
         if 'skip' in frame.data:
             session.steps['profil'] = spawn(frame, stub, dependency='vpn')
             yield {
-                '_modules' : 'profil',
+                '_modules' : 'apps',
                 'status' : 'skipped',
                 'next' : 'willkommen'
             }
@@ -117,9 +135,10 @@ def on_request(frame):
                 session.information['profiles_cache'] = {}
                 for root, folders, files in os.walk('./dependencies/archinstall/profiles/'):
                     for file in files:
-                        extension = os.path.splitext(file)[1]
-                        if extension in ('.json', '.py'):
-                            session.information['profiles_cache'][file] = os.path.join(root, file)
+                        # extension = os.path.splitext(file)[1]
+                        # if extension in ('.json', '.py'):
+                        #    session.information['profiles_cache'][file] = os.path.join(root, file)
+                        session.information['profiles_cache'][file] = os.path.join(root, file)
                     break
 
                 yield {
@@ -129,17 +148,17 @@ def on_request(frame):
         
         elif 'template' in frame.data and frame.data['template'].strip():
 
-            session.steps['profil'] = spawn(frame, install_profile, profile_name=frame.data['template'], start_callback=notify_template_started, callback=notify_template_installed, dependency='internet')
+            #session.steps['profil'] = spawn(frame, install_profile, profile_name=frame.data['template'], start_callback=notify_template_started, callback=notify_template_installed, dependency='internet')
             
             yield {
-                'status' : 'queued',
-                'next' : 'applications',
-                '_modules' : 'profil' 
+                'status' : 'complete',
+                'next' : 'usb',
+                '_modules' : 'apps' 
             }
 
         else:
             yield {
                 'html' : html,
                 'javascript' : javascript,
-                '_modules' : 'profil'
+                '_modules' : 'usb'
             }

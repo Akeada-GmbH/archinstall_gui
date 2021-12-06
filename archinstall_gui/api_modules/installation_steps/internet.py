@@ -7,9 +7,9 @@ from lib.worker import spawn
 import session
 
 html = """
-<div class="padded_content flex_grow flex column">
-    <h3>WLAN einrichten</h3>
-    <span>Wählen Sie einen WLAN-Hotspot aus, mit dem Sie sich verbinden möchten.</span>
+<div class="padded_content flex_grow flex column" style="min-width: 80%;">
+    <h3><b>INTERNET VERBINDEN</b></h3>
+    <span>BITTE WÄHLEN SIE IHR WLAN-NETZWERK AUS UND VERBINDEN SIE SICH MIT DEM INTERNET</span>
     <div class="note">
         <div class="noteHeader"><div class="noteIcon"></div><span>Hinweis</span></div>
         <div class="noteBody">
@@ -32,10 +32,17 @@ html = """
     <div class="drive_information">
 
     </div>
+</div>
 
-    <div class="buttons bottom">
-        <button id="select_disk">Verbinden</button>
-    </div>
+<div class="form-group" style="padding-left:10px; padding-right:10px;">
+    <button id="back_step" class="btn btn-primary btn-lg"
+            type="submit">
+         Zurück
+    </button>
+    <button id="select_disk" class="btn btn-primary btn-lg float-right"
+            type="submit">
+         Verbinden
+    </button>
 </div>
 """
 
@@ -61,6 +68,12 @@ window.drives_dropdown.addEventListener('change', function(obj) {
     selected_drive = this.value;
     console.log(selected_drive);
 
+})
+
+document.querySelector('#back_step').addEventListener('click', function() {
+    socket.send({
+        '_module' : 'installation_steps/rechtliches',
+    })
 })
 
 document.querySelector('#select_disk').addEventListener('click', function() {
@@ -168,6 +181,11 @@ def on_request(frame):
         if 'skip' in frame.data:
             #session.steps['profiles'] = spawn(frame, stub, dependency='vpn')
             session.steps['internet'] = True
+            yield {
+                '_modules' : 'rechtliches',
+                'status' : 'complete',
+                'next' : 'vpn'
+            }
             yield {
                 '_modules' : 'internet',
                 'status' : 'complete',

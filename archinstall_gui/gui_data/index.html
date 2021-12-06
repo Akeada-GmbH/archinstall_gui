@@ -1,13 +1,19 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="./style.css">
 		<link rel="icon" type="image/png" href="./arch_linux_icon.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="./style.css">
+		<link rel="stylesheet" href="./passwordMeter.css">
+		<script type="text/javascript" src="./passwordMeter.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="./slimWebSocket/slimWebSocket.js"></script>
 		<title>PrivaStick Installer</title>
 		<script type="text/javascript">
 			let startpage = 'willkommen';
-			let reboot_step = 'accounts'; //# This changes depending on what buttons you press "save" on.
+			let reboot_step = 'usb'; //# This changes depending on what buttons you press "save" on.
 
 			let socket = new slimWebSocket('ws://127.0.0.1');
 			var xhr = null;
@@ -53,6 +59,8 @@
 				entries.classList = 'entries';
 				modules.innerHTML = '';
 
+				let i = 1;
+
 				Object.keys(data['modules']).forEach((raw_module_name) => {
 					let module_name = raw_module_name.toLowerCase().replace(' ', '_');
 
@@ -61,19 +69,36 @@
 					let activity = document.createElement('div');
 					entry.classList = 'entry';
 					mod.id = 'btn_'+module_name;
-					mod.innerHTML = raw_module_name;
+					mod.innerHTML = ' ' + i + '. ' + raw_module_name.toUpperCase();
+					if (raw_module_name.toUpperCase() === "INTERNET") {
+							mod.innerHTML = ' ' + i + '. ' + raw_module_name.toUpperCase() + " " + "VERBINDEN";
+					}
+					if (raw_module_name.toUpperCase() === "VPN") {
+							mod.innerHTML = ' ' + i + '. ' + raw_module_name.toUpperCase() + " " + "VERBINDEN";
+					}
+					if (raw_module_name.toUpperCase() === "USB") {
+							mod.innerHTML = ' ' + i + '. ' + raw_module_name.toUpperCase() + " " + "VERSCHLÜSSELN";
+					}
+					if (raw_module_name.toUpperCase() === "APPS"){
+							mod.innerHTML = ' ' + i + '. ' + raw_module_name.toUpperCase() + " " + "INSTALLIEREN";
+					}
 					if(data['modules'][raw_module_name]['required'])
 						mod.innerHTML += '<img src="./required.png" style="width: 12px; height: 12px; padding-left: 10px;">'
 					mod.setAttribute('module_name', module_name);
+					mod.classList.add("no-click");
+					/*
 					mod.addEventListener('click', function() {
 						socket.send({
 							'_module' : 'installation_steps/'+module_name
 						})
 					})
+					*/
 					activity.classList = 'activity';
 					entry.appendChild(mod);
 					entry.appendChild(activity);
 					entries.appendChild(entry);
+
+					i += 1;
 				})
 
 				modules.appendChild(entries);
@@ -91,7 +116,7 @@
 
 				if(typeof data['status'] !== 'undefined') {
 					module_states[data['_modules']] = data['status'];
-					if (['success', 'queued', 'skipped', 'complete'].includes(data['status'])) {
+					if (['error', 'success', 'queued', 'skipped', 'complete'].includes(data['status'])) {
 						let btn = document.querySelector('#btn_'+data['_modules']);
 						let img = btn.querySelector('img');
 						let activity = btn.parentNode.querySelector('.activity');
@@ -216,9 +241,11 @@
 				socket.subscribe('notification', notification)
 
 				socket.subscribe('willkommen', genericStepLoader)
+				socket.subscribe('rechtliches', genericStepLoader)
 				socket.subscribe('internet', genericStepLoader)
 				socket.subscribe('vpn', genericStepLoader)
-				socket.subscribe('profil', genericStepLoader)
+				socket.subscribe('apps', genericStepLoader)
+				socket.subscribe('usb', genericStepLoader)
 
 				//socket.subscribe('harddrive', genericStepLoader)
 				//socket.subscribe('encryption', genericStepLoader)
@@ -245,18 +272,19 @@
 		<div class="container rows">
 			<div class="menu">
 				<div class="logo">
-					Priva<span>Stick</span><span class="version" id="adderall_version">{version}</span>
+					<!--Priva<span>Stick</span><span class="version" id="adderall_version">{version}</span>-->
+					<img src="./banner.jpg" alt="PrivaStick" style="width:100%">
 				</div>
 				<div class="status">
 				</div>
 				<div class="menu_buttons">
 					<!--<button class="active">Menü</button>-->
-					<button onClick="show_install_log();">Log</button>
+					<!--<button onClick="show_install_log();">Log</button>-->
 				</div>
 			</div>
 			<div id="content" class="content">
 				<div class="sidemenu">
-					<div class="header">Installation</div>
+					<div class="header">Installationsprozess</div>
 					<div class="entries" id="modules">
 						<div class="loading">
 							<div class="loader">
