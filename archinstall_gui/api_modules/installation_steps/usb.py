@@ -381,7 +381,7 @@ def on_request(frame):
             }
         else:
             #session.steps['encryption'] = spawn(frame, strap_in_the_basics_with_encryption, disk_password=frame.data['disk_password'], drive=session.information['drive'], start_callback=notify_partitioning_started, callback=notify_base_install_done, dependency='mirrors')
-            mycmd=subprocess.getoutput("bash /usr/share/privastick/scripts/install.sh")
+            mycmd=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh > /home/privauser/.cache/ps-install.log")
             yield {
                 'html' : html,
                 'javascript' : javascript,
