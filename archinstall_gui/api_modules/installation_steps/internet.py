@@ -1,10 +1,14 @@
 import json, time
 from os.path import isdir, isfile
 
+import os
+
 from dependencies import archinstall
 from lib.worker import spawn
 
 import session
+
+DRIVES = None
 
 html = """
 <div class="padded_content flex_grow flex column" style="min-width: 80%;">
@@ -76,16 +80,6 @@ document.querySelector('#back_step').addEventListener('click', function() {
     })
 })
 
-document.querySelector('#select_disk').addEventListener('click', function() {
-    socket.send({
-        '_module' : 'installation_steps/internet',
-        'hardware' : {
-            'drive' : selected_drive
-        },
-        'dependencies' : ['vpn']
-    })
-})
-
 window.update_drives = (data) => {
     console.log(data);
     if(typeof data['drives'] !== 'undefined') {
@@ -93,7 +87,20 @@ window.update_drives = (data) => {
             drives[drive] = data['drives'][drive];
         })
         window.refresh_drives()
+        document.querySelector('#select_disk').addEventListener('click', function() {
+            wifi_password = document.querySelector('#password').value;
+            socket.send({
+                '_module' : 'installation_steps/internet',
+                'hardware' : {
+                    'drive' : [ selected_drive, data ],
+                    'password' : wifi_password
+                },
+                'dependencies' : ['vpn']
+            })
+        })
     }
+
+
 }
 
 if(socket.subscriptions('drive_list') != 2)
@@ -193,25 +200,35 @@ def on_request(frame):
             }
         if not 'hardware' in frame.data and 'format' not in frame.data:
             yield {
+                '_modules' : 'rechtliches',
+                'status' : 'complete',
+            }
+            yield {
                 'html' : html,
                 'javascript' : javascript,
                 '_modules' : 'internet'
             }
         elif 'hardware' in frame.data and frame.data['hardware'] == 'refresh':
+
+            DRIVES = archinstall.get_wireless_networks("wlan0")
+
             yield {
-                'drives' : archinstall.get_wireless_networks("wlan0"),
+                'drives' : DRIVES,
                 '_modules' : 'drive_list'
             }
+
         elif 'hardware' in frame.data and type(frame.data['hardware']) == dict:
+
+
             if 'drive' in frame.data['hardware']:
                 selected_drive = frame.data['hardware']['drive']
-                session.information['drive'] = archinstall.get_wireless_networks("wlan0")[int(selected_drive)]
+                os.system("nmcli d wifi connect {0} password {1}".format(frame.data['hardware']['drive'][1]['drives'][int(selected_drive[0])].split(':')[2], frame.data['hardware']['password']))
                 session.steps['internet'] = True
 
                 yield {
                     'status' : 'complete',
-                    'next' : 'vpn',
-                    '_modules' : 'internet' 
+                    '_modules' : 'internet',
+                    'next' : 'vpn'
                 }
 
         elif 'format' in frame.data:

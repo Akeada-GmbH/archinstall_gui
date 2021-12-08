@@ -100,8 +100,8 @@ body {
 
 .menu {
 	font: normal 100% montserrat;
-	background-color: #000;
-	opacity: 0.5;
+	background-color: #FFF;
+	opacity: 1.0;
 	padding: 15px;
 	display: flex;
 	flex-direction: row;

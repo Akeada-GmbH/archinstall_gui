@@ -2,13 +2,15 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="icon" type="image/png" href="./arch_linux_icon.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
+		<link rel="stylesheet" href="./bootstrap/bootstrap.min.css">
 		<link rel="stylesheet" href="./style.css">
-		<link rel="stylesheet" href="./passwordMeter.css">
-		<script type="text/javascript" src="./passwordMeter.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+		<script type="text/javascript" src="./jquery.min.js"></script>
+		<script type="text/javascript" src="./popper.min.js"></script>
+		<script type="text/javascript" src="./bootstrap/bootstrap.min.js"></script>
 		<script type="text/javascript" src="./slimWebSocket/slimWebSocket.js"></script>
 		<title>PrivaStick Installer</title>
 		<script type="text/javascript">
@@ -115,11 +117,13 @@
 					document.querySelector('#configuration').innerHTML = data['html'];
 
 				if(typeof data['status'] !== 'undefined') {
+					console.log(data['status'])
 					module_states[data['_modules']] = data['status'];
 					if (['error', 'success', 'queued', 'skipped', 'complete'].includes(data['status'])) {
 						let btn = document.querySelector('#btn_'+data['_modules']);
 						let img = btn.querySelector('img');
 						let activity = btn.parentNode.querySelector('.activity');
+						console.log(img)
 						if(img)
 							img.remove();
 
@@ -151,6 +155,80 @@
 				}
 
 				return true;
+			}
+
+			function popup2(information) {
+				let frame = document.createElement('div');
+				let frameContent = document.createElement('div');
+				frame.id = 'popup';
+				frame.classList = 'popup';
+				frameContent.classList = 'popupBody'
+
+				let header = document.createElement('div');
+				header.classList = 'noteHeader';
+
+				let headerIcon = document.createElement('div');
+				headerIcon.classList = 'noteIcon';
+				let headerText = document.createElement('span');
+				headerText.innerHTML = 'Video';
+
+				let content = document.createElement('div');
+				content.classList = 'noteBody';
+				if (typeof information == "string")
+					content.innerHTML = information;
+				else
+					content.appendChild(information)
+
+				frame.appendChild(frameContent);
+				frameContent.appendChild(header);
+				header.appendChild(headerIcon);
+				header.appendChild(headerText);
+				frameContent.appendChild(content);
+
+				document.body.appendChild(frame);
+				frame.addEventListener('click', (event) => {
+					if(event.target == frame) // event.path[0]?
+						frame.remove();
+				})
+
+				return frame;
+			}
+
+			function popup(information) {
+				let frame = document.createElement('div');
+				let frameContent = document.createElement('div');
+				frame.id = 'popup';
+				frame.classList = 'popup';
+				frameContent.classList = 'popupBody'
+
+				let header = document.createElement('div');
+				header.classList = 'noteHeader';
+
+				let headerIcon = document.createElement('div');
+				headerIcon.classList = 'noteIcon';
+				let headerText = document.createElement('span');
+				headerText.innerHTML = 'Notification';
+
+				let content = document.createElement('div');
+				content.classList = 'noteBody';
+				if (typeof information == "string")
+					content.innerHTML = information;
+				else
+					content.appendChild(information)
+
+				frame.appendChild(frameContent);
+				frameContent.appendChild(header);
+				header.appendChild(headerIcon);
+				header.appendChild(headerText);
+				frameContent.appendChild(content);
+
+				document.body.appendChild(frame);
+				frame.addEventListener('click', (event) => {
+					if(event.target == frame) // event.path[0]?
+						frame.remove();
+				})
+
+				return frame;
 			}
 
 			function notification(data) {
@@ -271,9 +349,9 @@
 	<body>
 		<div class="container rows">
 			<div class="menu">
-				<div class="logo">
-					<!--Priva<span>Stick</span><span class="version" id="adderall_version">{version}</span>-->
-					<img src="./banner.jpg" alt="PrivaStick" style="width:100%">
+				<div class="logo" style="color:#000;">
+					Priva<span>Stick</span><span class="version" id="adderall_version">{version}</span>
+					<!--<img src="./banner.jpg" alt="PrivaStick" style="width:100%">-->
 				</div>
 				<div class="status">
 				</div>

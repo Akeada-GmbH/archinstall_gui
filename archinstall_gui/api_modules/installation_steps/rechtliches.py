@@ -121,6 +121,7 @@ document.querySelector('#back_step').addEventListener('click', function() {
 
 window.checkInternetConnection = () => {
     var isOnLine = navigator.onLine;
+    console.log('Initially ' + (window.navigator.onLine ? 'on' : 'off') + 'line');
     if (isOnLine) {
         document.querySelector('#skip_step').addEventListener('click', function() {
             socket.send({
@@ -131,7 +132,6 @@ window.checkInternetConnection = () => {
         })
     } else {
         document.querySelector('#skip_step').addEventListener('click', function() {
-            console.log("test") 
             socket.send({
                 '_module' : 'installation_steps/internet',
             })
@@ -141,8 +141,6 @@ window.checkInternetConnection = () => {
 }
 
 window.onload = window.checkInternetConnection();
-
-
 
 """
 

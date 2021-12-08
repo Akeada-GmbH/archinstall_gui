@@ -5,6 +5,8 @@ from dependencies import archinstall
 from lib.worker import spawn
 import session
 
+import subprocess
+
 html = """
 <div class="padded_content flex_grow flex column" style="min-width: 100%;">
     <h3><b>INSTALLATION DER PROGRAMME</b></h3>
@@ -38,7 +40,7 @@ html = """
     </button>
     <button id="save_templates" class="btn btn-primary btn-lg float-right"
             type="submit">
-         Installieren
+         Weiter
     </button>
 </div>
 """
@@ -149,6 +151,12 @@ def on_request(frame):
         elif 'template' in frame.data and frame.data['template'].strip():
 
             #session.steps['profil'] = spawn(frame, install_profile, profile_name=frame.data['template'], start_callback=notify_template_started, callback=notify_template_installed, dependency='internet')
+
+
+            if frame.data['template'] == "Windows":
+                #mycmd=subprocess.getoutput("bash /usr/share/privastick/scripts/switch-desktop-to-win.sh")
+                subprocess.run("/home/privauser/.config/ps-tools/scripts/switch-desktop-to-win.sh", user="privauser")
+
             
             yield {
                 'status' : 'complete',

@@ -52,7 +52,7 @@ html = """
 <!-- <video id="player" width="350" height="250" preload="none" controls>      <source id="video-src">   </video> -->
 
 <div class='embed-container' style='padding-top:100px;max-height:40%; padding-top=100px;'>
-  <iframe src='https://player.vimeo.com/video/574111364' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+  <iframe src='https://player.vimeo.com/video/574111364?autoplay=1&loop=1&autopause=0' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
   </div>
 
     <div class="note">
@@ -82,7 +82,7 @@ html = """
 javascript = """
 document.querySelector('#skip_step').addEventListener('click', function() {
     socket.send({
-        '_module' : 'installation_steps/rechtliches',
+        '_module' : 'installation_steps/rconsole.log('Initially ' + (window.navigator.onLine ? 'on' : 'off') + 'line');echtliches',
     })
 })
 """

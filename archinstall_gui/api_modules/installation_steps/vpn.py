@@ -4,6 +4,8 @@ from os.path import isdir, isfile
 from dependencies import archinstall
 from lib.worker import spawn
 
+import subprocess
+
 import session
 
 if 'internet' in session.steps:
@@ -88,22 +90,10 @@ else:
 """
 
 javascript = """
-window.disk_password_input = document.querySelector('#disk_password');
-window.hostname_input = document.querySelector('#hostname');
-
-if(disk_password) {
-    disk_password_input.value = disk_password;
-    disk_password_input.disabled = true;
-}
-
-if(hostname) {
-    hostname_input.value = hostname;
-}
-
 function check_credentials(input) {
 		let input1 = document.querySelector('#user').value
 		let input2 = document.querySelector('#password').value
-		if ( input1.includes("@privavpn.de") && input2.length == 9) {
+		if ( input1.includes("@privavpn.de") && input2.length == 10) {
 				var continue_button = document.getElementById("connect");
 				continue_button.classList.remove("no-click");
 				continue_button.classList.remove("btn-secondary");
@@ -116,23 +106,41 @@ function check_credentials(input) {
 		}
 }
 
+function check_credentials_2(vpn_username, vpn_password) {
+    var url = "http://vpn-api.01.priva.dev:19999";
+    var data = JSON.stringify({"Username": vpn_username, "Password": vpn_password});
+    // Example POST method implementation:
+async function postData(url = '', data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'no-cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+postData(url, data)
+  .then(data => {
+    console.log(data); // JSON data parsed by `data.json()` call
+  });
 
-document.querySelector('#connect').addEventListener('click', function() {
-    disk_password = document.querySelector('#password').value;
-
-    console.log(password.value)
-
-    socket.send({
-        '_module' : 'installation_steps/vpn',
-        'disk_password' : password.value
-    })
-})
+}
 
 
 window.showRootPwPrompt = () => {
     let area = document.createElement('div');
-    area.innerHTML = '<span>You opted in to skip this step, or a sudo user was not selected. This requires you to set a root password <i>(blank password works fine too)</i> or go back and create a sudo user since the root account is by default locked/disabled. You can go back by closing this popup.</span>'
+    // area.innerHTML = '<span>You opted in to skip this step, or a sudo user was not selected. This requires you to set a root password <i>(blank password works fine too)</i> or go back and create a sudo user since the root account is by default locked/disabled. You can go back by closing this popup.</span>'
+    area.innerHTML = '<div style="width:720px;text-align:right;padding:10px;"><iframe style="border:none;overflow:hidden !important;width:100%;height:360px;" src="https://www.metercustom.net/plugin/?hl=de&th=w"></iframe>Anbieter <a href="https://www.geschwindigkeit.de">Geschwindigkeit.de</a></div>'
 
+    /*
     let form_area = document.createElement('div');
     form_area.classList = 'form-area';
     area.appendChild(form_area);
@@ -155,51 +163,72 @@ window.showRootPwPrompt = () => {
     label_span.classList='label-content';
     label_span.innerHTML = 'Choose a root password <i>(empty entry is allowed)</i>'
     root_pw_label.appendChild(label_span);
+    */
 
     let buttons = document.createElement('div');
-    buttons.classList = 'buttons bottom';
+    buttons.classList = 'form-group';
     area.appendChild(buttons);
 
     let save_btn = document.createElement('button');
-    save_btn.innerHTML = 'Set root password';
+    save_btn.classList = 'btn btn-primary btn-lg float-right'
+    save_btn.style.listStyle = 'padding-bottom:10px;'
+    save_btn.innerHTML = 'Weiter';
     buttons.appendChild(save_btn);
 
+    /*
     let cancel_btn = document.createElement('button');
+    cancel_btn.classList = 'btn btn-secondary btn-lg'
     cancel_btn.innerHTML = 'Go back';
     buttons.appendChild(cancel_btn);
+    */
 
     let frame = popup(area);
 
     save_btn.addEventListener('click', () => {
+
+        /*
         socket.send({
-            '_module' : 'installation_steps/accounts',
-            'root_pw' : root_pw_input.value
+            '_module' : 'installation_steps/vpn',
+            'vpn_credentials' : [ vpn_username, vpn_password ],
         })
+        */
+
+
+        socket.send({
+            '_module' : 'installation_steps/vpn',
+            'continue' : true,
+        })
+
         frame.remove();
     })
 
+    /*
     cancel_btn.addEventListener('click', () => {
         frame.remove();
     })
+    */
 }
 
-document.querySelector('#create_user').addEventListener('click', function() {
-    let username = document.querySelector('#user').value;
-    let password = document.querySelector('#password').value;
-    let sudo = document.querySelector('#sudoer').checked;
 
-    if(username.length <= 0 || !sudo) {
-        showRootPwPrompt();
-    } else {
-        reboot_step = 'accounts';
+document.querySelector('#connect').addEventListener('click', function() {
+    vpn_username = document.querySelector('#user').value;
+    vpn_password = document.querySelector('#password').value;
 
-        socket.send({
-            '_module' : 'installation_steps/accounts',
-            'username' : username,
-            'password' : password,
-            'sudo' : sudo
-        })
-    }
+    socket.send({
+        '_module' : 'installation_steps/vpn',
+        'vpn_credentials' : [ vpn_username, vpn_password ],
+    })
+
+    console.log(Object.keys('vpn_active'))
+
+	if(vpn_username.length <= 0 ) {
+		// showRootPwPrompt();
+	} else {
+		showRootPwPrompt();
+
+	}
+
+
 })
 
 document.querySelector('#back_step').addEventListener('click', function() {
@@ -207,22 +236,6 @@ document.querySelector('#back_step').addEventListener('click', function() {
 	socket.send({
 		'_module' : 'installation_steps/internet',
 	})
-})
-
-document.querySelector('#skipButton').addEventListener('click', function() {
-    socket.send({
-        '_module' : 'installation_steps/vpn',
-        'skip_vpn' : true,
-        'dependencies' : ['vpn']
-    })
-})
-
-document.querySelector('#skip_accounts').addEventListener('click', function() {
-    socket.send({
-        '_module' : 'installation_steps/vpn',
-        'skip_vpn' : true,
-        'dependencies' : ['vpn']
-    })
 })
 
 """
@@ -316,7 +329,7 @@ def on_request(frame):
             }
             return
 
-        if not 'disk_password' in frame.data:
+        if not 'vpn_credentials' in frame.data and not 'continue' in frame.data:
             yield {
                 'status' : 'error',
                 'html' : html,
@@ -325,9 +338,37 @@ def on_request(frame):
             }
 
         else:
-            #session.steps['encryption'] = spawn(frame, strap_in_the_basics_with_encryption, disk_password=frame.data['disk_password'], drive=session.information['drive'], start_callback=notify_partitioning_started, callback=notify_base_install_done, dependency='mirrors')
-            yield {
-                'status' : 'complete',
-                'next' : 'apps',
-                '_modules' : 'vpn' 
-            }
+
+            if 'vpn_credentials' in frame.data:
+
+                #session.steps['encryption'] = spawn(frame, strap_in_the_basics_with_encryption, disk_password=frame.data['disk_password'], drive=session.information['drive'], start_callback=notify_partitioning_started, callback=notify_base_install_done, dependency='mirrors')
+                vpn_user = frame.data['vpn_credentials'][0]
+                vpn_pass = frame.data['vpn_credentials'][1]
+
+                # import pdb; pdb.set_trace()
+
+                mycmd=subprocess.getoutput("echo '{0}\n{1}' | /usr/share/privastick/scripts/PrivastickVPNSetup".format(vpn_user,vpn_pass)).split('\n')[-1]
+
+                if 'Falsche Benutzerdaten.' in mycmd:
+                    session.information['vpn_active'] = False
+                    yield {
+                        'status' : 'error',
+                        'html' : html,
+                        'javascript' : javascript,
+                        '_modules' : 'vpn'
+                    }
+                else:
+                    session.information['vpn_active'] = True
+                    yield {
+                        'status' : 'complete',
+                        'html' : html,
+                        'javascript' : javascript,
+                        '_modules' : 'vpn'
+                    }
+
+            elif 'continue' in frame.data:
+
+                yield {
+                    'next' : 'apps',
+                    '_modules' : 'vpn' 
+                }
