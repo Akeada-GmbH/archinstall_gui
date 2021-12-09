@@ -56,14 +56,12 @@ document.querySelector('#save_templates').addEventListener('click', function() {
     })
 })
 
-/*
-document.querySelector('#skip_templates').addEventListener('click', function() {
+document.querySelector('#back_step').addEventListener('click', function() {
     socket.send({
-        '_module' : 'installation_steps/apps',
-        'skip' : true
+        '_module' : 'installation_steps/vpn',
+        'back' : true
     })
 })
-*/
 
 window.refresh_template_list = () => {
     let templatelist_dropdown = document.querySelector('#templatelist');
@@ -120,6 +118,16 @@ def stub(*args, **kwargs):
 def on_request(frame):
     print(frame.data)
     if '_module' in frame.data and frame.data['_module'] == 'installation_steps/apps':
+        if 'back' in frame.data:
+            yield {
+                'status' : 'success',
+                '_modules' : 'apps'
+            }
+            yield {
+                'next' : 'apps',
+                'status' : 'success',
+                '_modules' : 'usb'
+            }
         if 'skip' in frame.data:
             session.steps['profil'] = spawn(frame, stub, dependency='vpn')
             yield {

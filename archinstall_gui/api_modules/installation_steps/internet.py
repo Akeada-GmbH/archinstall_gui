@@ -20,6 +20,7 @@ html = """
             Es kann einen Moment dauern, bis Ihnen verfügbare WLAN-Hotspots angezeigt werden.
         </div>
     </div>
+    <!--
     <div class="form-area">
         <div class="input-form" id="input-form">
             <input type="text" id="password" required autocomplete="off" />
@@ -28,6 +29,8 @@ html = """
             </label>
         </div>
     </div>
+    -->
+
     <br>
     <br>
 
@@ -45,7 +48,7 @@ html = """
     </button>
     <button id="select_disk" class="btn btn-primary btn-lg float-right"
             type="submit">
-         Verbinden
+         Weiter
     </button>
 </div>
 """
@@ -53,6 +56,75 @@ html = """
 ## TODO:
 ## Needs to be loaded this way, since we can't inject JS into divs etc in the HTML above.
 javascript = """
+window.showWifiPwPrompt = (selected_drive, data) => {
+    let area = document.createElement('div');
+	area.innerHTML = '<span>Bitte geben Sie Ihr WLAN-Passwort ein <i>(falls vorhanden)</i> und klicken Sie anschließend auf <b>Verbinden</b></span>'
+
+    let form_area = document.createElement('div');
+    form_area.classList = 'form-area';
+    area.appendChild(form_area);
+
+    let input_form = document.createElement('div');
+    input_form.classList = 'input-form';
+    form_area.appendChild(input_form);
+
+    let root_pw_input = document.createElement('input');
+    root_pw_input.type = 'text';
+    root_pw_input.required = true;
+    root_pw_input.autocomplete = 'off'; // Strictly not nessecary
+    input_form.appendChild(root_pw_input);
+
+    let root_pw_label = document.createElement('label');
+    root_pw_label.classList = 'label';
+    input_form.appendChild(root_pw_label);
+
+    let label_span = document.createElement('span');
+    label_span.classList='label-content';
+    // label_span.innerHTML = 'Choose a root password <i>(empty entry is allowed)</i>'
+    label_span.innerHTML = 'Passwort hier eingeben...'
+    root_pw_label.appendChild(label_span);
+
+    let buttons = document.createElement('div');
+    buttons.classList = 'form-group';
+    area.appendChild(buttons);
+
+    let save_btn = document.createElement('button');
+    save_btn.classList = 'btn btn-primary btn-lg float-right'
+    save_btn.style.listStyle = 'padding-bottom:10px;'
+    save_btn.innerHTML = 'Verbinden';
+    buttons.appendChild(save_btn);
+
+    /*
+    let cancel_btn = document.createElement('button');
+    cancel_btn.classList = 'btn btn-secondary btn-lg'
+    cancel_btn.innerHTML = 'Go back';
+    buttons.appendChild(cancel_btn);
+    */
+
+    let frame = popup(area);
+
+
+    save_btn.addEventListener('click', () => {
+        console.log(root_pw_input.value);
+
+        socket.send({
+            '_module' : 'installation_steps/internet',
+            'hardware' : {
+                'drive' : [ selected_drive, data ],
+                'password' : root_pw_input.value
+            },
+            'dependencies' : ['vpn']
+        })
+
+    })
+
+    /*
+    cancel_btn.addEventListener('click', () => {
+        frame.remove();
+    })
+    */
+}
+
 window.drives_dropdown = document.querySelector('#drives');
 
 window.refresh_drives = () => {
@@ -77,6 +149,7 @@ window.drives_dropdown.addEventListener('change', function(obj) {
 document.querySelector('#back_step').addEventListener('click', function() {
     socket.send({
         '_module' : 'installation_steps/rechtliches',
+        'back' : true
     })
 })
 
@@ -88,16 +161,9 @@ window.update_drives = (data) => {
         })
         window.refresh_drives()
         document.querySelector('#select_disk').addEventListener('click', function() {
-            wifi_password = document.querySelector('#password').value;
-            socket.send({
-                '_module' : 'installation_steps/internet',
-                'hardware' : {
-                    'drive' : [ selected_drive, data ],
-                    'password' : wifi_password
-                },
-                'dependencies' : ['vpn']
-            })
+            showWifiPwPrompt(selected_drive, data);
         })
+
     }
 
 
@@ -185,6 +251,16 @@ def strap_in_the_basics(frame, drive, worker, hostname='Archnistall', *args, **k
 
 def on_request(frame):
     if '_module' in frame.data and frame.data['_module'] == 'installation_steps/internet':
+        if 'back' in frame.data:
+            yield {
+                'status' : 'success',
+                '_modules' : 'internet'
+            }
+            yield {
+                'next' : 'internet',
+                'status' : 'success',
+                '_modules' : 'vpn'
+            }
         if 'skip' in frame.data:
             #session.steps['profiles'] = spawn(frame, stub, dependency='vpn')
             session.steps['internet'] = True

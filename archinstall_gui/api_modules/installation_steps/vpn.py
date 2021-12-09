@@ -90,6 +90,10 @@ else:
 """
 
 javascript = """
+while (document.getElementById('popup')) {
+    document.getElementById('popup').remove()
+}
+
 function check_credentials(input) {
 		let input1 = document.querySelector('#user').value
 		let input2 = document.querySelector('#password').value
@@ -135,80 +139,6 @@ postData(url, data)
 }
 
 
-window.showRootPwPrompt = () => {
-    let area = document.createElement('div');
-    // area.innerHTML = '<span>You opted in to skip this step, or a sudo user was not selected. This requires you to set a root password <i>(blank password works fine too)</i> or go back and create a sudo user since the root account is by default locked/disabled. You can go back by closing this popup.</span>'
-    area.innerHTML = '<div style="width:720px;text-align:right;padding:10px;"><iframe style="border:none;overflow:hidden !important;width:100%;height:360px;" src="https://www.metercustom.net/plugin/?hl=de&th=w"></iframe>Anbieter <a href="https://www.geschwindigkeit.de">Geschwindigkeit.de</a></div>'
-
-    /*
-    let form_area = document.createElement('div');
-    form_area.classList = 'form-area';
-    area.appendChild(form_area);
-
-    let input_form = document.createElement('div');
-    input_form.classList = 'input-form';
-    form_area.appendChild(input_form);
-
-    let root_pw_input = document.createElement('input');
-    root_pw_input.type = 'password';
-    root_pw_input.required = true;
-    root_pw_input.autocomplete = 'off'; // Strictly not nessecary
-    input_form.appendChild(root_pw_input);
-
-    let root_pw_label = document.createElement('label');
-    root_pw_label.classList = 'label';
-    input_form.appendChild(root_pw_label);
-
-    let label_span = document.createElement('span');
-    label_span.classList='label-content';
-    label_span.innerHTML = 'Choose a root password <i>(empty entry is allowed)</i>'
-    root_pw_label.appendChild(label_span);
-    */
-
-    let buttons = document.createElement('div');
-    buttons.classList = 'form-group';
-    area.appendChild(buttons);
-
-    let save_btn = document.createElement('button');
-    save_btn.classList = 'btn btn-primary btn-lg float-right'
-    save_btn.style.listStyle = 'padding-bottom:10px;'
-    save_btn.innerHTML = 'Weiter';
-    buttons.appendChild(save_btn);
-
-    /*
-    let cancel_btn = document.createElement('button');
-    cancel_btn.classList = 'btn btn-secondary btn-lg'
-    cancel_btn.innerHTML = 'Go back';
-    buttons.appendChild(cancel_btn);
-    */
-
-    let frame = popup(area);
-
-    save_btn.addEventListener('click', () => {
-
-        /*
-        socket.send({
-            '_module' : 'installation_steps/vpn',
-            'vpn_credentials' : [ vpn_username, vpn_password ],
-        })
-        */
-
-
-        socket.send({
-            '_module' : 'installation_steps/vpn',
-            'continue' : true,
-        })
-
-        frame.remove();
-    })
-
-    /*
-    cancel_btn.addEventListener('click', () => {
-        frame.remove();
-    })
-    */
-}
-
 
 document.querySelector('#connect').addEventListener('click', function() {
     vpn_username = document.querySelector('#user').value;
@@ -219,12 +149,17 @@ document.querySelector('#connect').addEventListener('click', function() {
         'vpn_credentials' : [ vpn_username, vpn_password ],
     })
 
+    socket.send({
+        '_module' : 'installation_steps/vpn',
+        'continue' : true,
+    })
+
     console.log(Object.keys('vpn_active'))
 
 	if(vpn_username.length <= 0 ) {
 		// showRootPwPrompt();
 	} else {
-		showRootPwPrompt();
+		// showRootPwPrompt();
 
 	}
 
@@ -232,9 +167,9 @@ document.querySelector('#connect').addEventListener('click', function() {
 })
 
 document.querySelector('#back_step').addEventListener('click', function() {
-	console.log("test") 
 	socket.send({
 		'_module' : 'installation_steps/internet',
+        'back' : true
 	})
 })
 
@@ -312,6 +247,16 @@ def strap_in_the_basics_with_encryption(frame, disk_password, drive, worker, hos
 
 def on_request(frame):
     if '_module' in frame.data and frame.data['_module'] == 'installation_steps/vpn':
+        if 'back' in frame.data:
+            yield {
+                'status' : 'success',
+                '_modules' : 'vpn'
+            }
+            yield {
+                'next' : 'vpn',
+                'status' : 'success',
+                '_modules' : 'apps'
+            }
         if 'skip_vpn' in frame.data:
             #session.steps['profiles'] = spawn(frame, stub, dependency='vpn')
             yield {

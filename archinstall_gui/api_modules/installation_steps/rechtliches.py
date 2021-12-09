@@ -6,11 +6,11 @@ from time import time
 
 html = """
 <div class="padded_content flex_grow flex column" style="min-width:100%;">
-	<h3><b>NUTZUNGS- & LIZENZBEDINGUNGEN</b></h3>
-	
-	<span>
+    <h3><b>NUTZUNGS- & LIZENZBEDINGUNGEN</b></h3>
+    
+    <span>
     BITTE LESEN SIE SICH DIE NUTZUNGSBEDINGUNGEN AUFMERKSAM DURCH. BESTÄTIGEN SIE DIE ZURKENNTNISSNAHME UND STIMMEN SIE EBENFALLS DEN LIZENZBEDINGUNGEN ZU.
-	</span>
+    </span>
 
     <div style="padding-top:50px;">
         <div style="background-color:#ffff88;border:1px solid #ccc;overflow:auto;max-height:200px;">
@@ -39,7 +39,7 @@ html = """
     </div>
     <span style="padding-top:5px;">
         Ich habe die Allgemeinen Nutzungsbedingungen des PrivaStick gelesen und akzeptiere sie ausdrücklich. <input type="checkbox" id="checkbox1" value="no" onclick="validate(this)"/>
-	</span>
+    </span>
 
     <div style="padding-top:50px;">
         <div style="background-color:#ffff88;border:1px solid #ccc;overflow:auto;max-height:200px;">
@@ -68,7 +68,7 @@ html = """
     </div>
     <span style="padding-top:5px;">
         Ich habe die Allgemeinen Nutzungsbedingungen des PrivaStick gelesen und akzeptiere sie ausdrücklich. <input type="checkbox" id="checkbox2" value="no" onclick="validate(this)"/>
-	</span>
+    </span>
 
 
 </div>
@@ -89,23 +89,17 @@ html = """
 ## TODO:
 ## Needs to be loaded this way, since we can't inject JS into divs etc in the HTML above.
 javascript = """
-
-
-let checkbox1 = document.querySelector('#checkbox1')
-let checkbox2 = document.querySelector('#checkbox2')
-
-
 function validate(checkbox) {
   var c1 = document.getElementById("check1");
   var c2  = document.getElementById("check2");
-	console.log("test")
+    console.log("test")
   if (checkbox1.checked && checkbox2.checked) {
     // alert("checked");
 
-		var continue_button = document.getElementById("skip_step");
-		continue_button.classList.remove("no-click");
-		continue_button.classList.remove("btn-secondary");
-		continue_button.classList.add("btn-primary");
+        var continue_button = document.getElementById("skip_step");
+        continue_button.classList.remove("no-click");
+        continue_button.classList.remove("btn-secondary");
+        continue_button.classList.add("btn-primary");
 
   } else {
     // alert("You didn't check it all!");
@@ -113,9 +107,10 @@ function validate(checkbox) {
 }
 
 document.querySelector('#back_step').addEventListener('click', function() {
-	socket.send({
-		'_module' : 'installation_steps/willkommen',
-	})
+    socket.send({
+        '_module' : 'installation_steps/willkommen',
+        'back' : true
+    })
 })
 
 
@@ -145,13 +140,23 @@ window.onload = window.checkInternetConnection();
 """
 
 def on_request(frame):
-	if '_module' in frame.data and frame.data['_module'] == 'installation_steps/rechtliches':
-		yield {
-			'_modules' : 'willkommen',
-			'status' : 'complete',
-		}
-		yield {
-			'html' : html,
-			'javascript' : javascript,
-			'_modules' : 'vpn'
-		}
+    if '_module' in frame.data and frame.data['_module'] == 'installation_steps/rechtliches':
+        if 'back' in frame.data:
+            yield {
+                'status' : 'success',
+                '_modules' : 'rechtliches'
+            }
+            yield {
+                'next' : 'rechtliches',
+                'status' : 'success',
+                '_modules' : 'internet'
+            }
+        yield {
+            '_modules' : 'willkommen',
+            'status' : 'complete',
+        }
+        yield {
+            'html' : html,
+            'javascript' : javascript,
+            '_modules' : 'vpn'
+        }

@@ -35,7 +35,7 @@ if 'harddrive' in session.steps:
 
         <div class="form-area" id="form-area">
             <div class="input-form" id="input-form">
-                <input type="text" id="password1" required autocomplete="off"/>
+                <input type="text" id="password1" required autocomplete="off" onkeyup="check_credentials_(this.value);"/>
                 <label class="label">
                     <span class="label-content">Passwort hier eingeben...</span>
                 </label>
@@ -44,7 +44,7 @@ if 'harddrive' in session.steps:
 
         <div class="form-area" id="form-area">
             <div class="input-form" id="input-form">
-                <input type="text" id="password2" required autocomplete="off"/>
+                <input type="text" id="password2" required autocomplete="off" onkeyup="check_credentials_(this.value);"/>
                 <label class="label">
                     <span class="label-content">Passwort hier bestätigen...</span>
                 </label>
@@ -151,6 +151,13 @@ window.showRootPwPrompt2 = () => {
     })
     */
 }
+
+function handler(e) {
+  e.stopPropagation();
+  e.preventDefault();
+}
+
+
 document.querySelector('#finish').addEventListener('click', function() {
     
     disk_password = document.querySelector('#password1').value;
@@ -163,11 +170,48 @@ document.querySelector('#finish').addEventListener('click', function() {
             'disk_password' : disk_password
         })
 
+        var finish_btn = document.getElementById("finish");
+        var back_btn = document.getElementById("back_step");
+
+        finish_btn.classList.remove("btn-primary");
+        finish_btn.classList.add("no-click");
+        finish_btn.classList.add("btn-secondary");
+
+        back_btn.classList.remove("btn-primary");
+        back_btn.classList.add("no-click");
+        back_btn.classList.add("btn-secondary");
+
         showRootPwPrompt2();
+
+        document.addEventListener("click", handler, true);
 
     }
     
 })
+
+document.querySelector('#back_step').addEventListener('click', function() {
+    socket.send({
+        '_module' : 'installation_steps/apps',
+        'back' : true
+    })
+})
+
+function check_credentials_(input) {
+        let input1 = document.querySelector('#password1').value
+        let input2 = document.querySelector('#password2').value
+        if ( input1 == input2) {
+                var continue_button = document.getElementById("finish");
+                continue_button.classList.remove("no-click");
+                continue_button.classList.remove("btn-secondary");
+                continue_button.classList.add("btn-primary");
+        } else {
+                var continue_button = document.getElementById("finish");
+                continue_button.classList.add("no-click");
+                continue_button.classList.add("btn-secondary");
+                continue_button.classList.remove("btn-primary");
+        }
+}
+
 """
 
 javascript_ = """
@@ -258,6 +302,7 @@ if(disk_password) {
 if(hostname) {
     hostname_input.value = hostname;
 }
+
 
 
 document.querySelector('#finish').addEventListener('click', function() {
@@ -380,8 +425,12 @@ def on_request(frame):
                 '_modules' : 'usb'
             }
         else:
-            #session.steps['encryption'] = spawn(frame, strap_in_the_basics_with_encryption, disk_password=frame.data['disk_password'], drive=session.information['drive'], start_callback=notify_partitioning_started, callback=notify_base_install_done, dependency='mirrors')
-            mycmd=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh > /home/privauser/.cache/ps-install.log")
+            disk_password = frame.data['disk_password']
+            textfile = open("/home/privauser/.cache/.disk_password", "w")
+            a = textfile.write(disk_password)
+            textfile.close()
+
+            mycmd=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh {0} > /home/privauser/.cache/ps-install.log")
             yield {
                 'html' : html,
                 'javascript' : javascript,
