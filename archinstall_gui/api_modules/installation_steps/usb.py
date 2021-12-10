@@ -441,9 +441,9 @@ def on_request(frame):
 
             ps_install=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh > /home/privauser/.cache/ps-install.log")
 
-            ps_reencrypt = subprocess.Popen(['printf','%s\n', 'privaroot', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
+            ps_reencrypt = subprocess.Popen(['printf','%s\n', 'test', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
 
-            output = subprocess.check_output(['bash', '/usr/share/privastick/scripts/reencrypt.sh'], stdin=ps_reencrypt.stdout)
+            output = subprocess.check_output(['bash', '/usr/share/privastick/scripts/PrivaStickReencrypt', 'cryptroot'], stdin=ps_reencrypt.stdout)
 
             ps_reencrypt.wait()
 
