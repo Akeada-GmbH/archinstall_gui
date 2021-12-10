@@ -427,12 +427,6 @@ def on_request(frame):
         else:
             disk_password = frame.data['disk_password']
 
-            #textfile = open("/home/privauser/.cache/.disk_password", "w")
-            #a = textfile.write(disk_password)
-            #textfile.close()
-
-            import pdb; pdb.set_trace()
-
             ps_pw = subprocess.Popen(['printf','%s\n', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
 
             output = subprocess.check_output(['passwd', 'privauser'], stdin=ps_pw.stdout)
