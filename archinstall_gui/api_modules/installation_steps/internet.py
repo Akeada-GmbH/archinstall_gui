@@ -7,8 +7,8 @@ from dependencies import archinstall
 from lib.worker import spawn
 
 import session
-
-DRIVES = None
+import subprocess
+from shlex import quote
 
 html = """
 <div class="padded_content flex_grow flex column" style="min-width: 80%;">
@@ -46,7 +46,7 @@ html = """
             type="submit">
          Zurück
     </button>
-    <button id="select_disk" class="btn btn-primary btn-lg float-right"
+    <button id="select_disk" class="btn btn-secondary btn-lg float-right no-click"
             type="submit">
          Weiter
     </button>
@@ -143,6 +143,10 @@ window.refresh_drives = () => {
 window.drives_dropdown.addEventListener('change', function(obj) {
     selected_drive = this.value;
     console.log(selected_drive);
+    var continue_button = document.getElementById("select_disk");
+    continue_button.classList.remove("no-click");
+    continue_button.classList.remove("btn-secondary");
+    continue_button.classList.add("btn-primary");
 
 })
 
@@ -160,8 +164,17 @@ window.update_drives = (data) => {
             drives[drive] = data['drives'][drive];
         })
         window.refresh_drives()
+
         document.querySelector('#select_disk').addEventListener('click', function() {
-            showWifiPwPrompt(selected_drive, data);
+            if (selected_drive) {
+
+                showWifiPwPrompt(selected_drive, data);
+
+            } else {
+
+                console.log("test");
+                alert("test");
+            }
         })
 
     }
@@ -286,20 +299,17 @@ def on_request(frame):
             }
         elif 'hardware' in frame.data and frame.data['hardware'] == 'refresh':
 
-            DRIVES = archinstall.get_wireless_networks("wlan0")
-
             yield {
-                'drives' : DRIVES,
+                'drives' : archinstall.get_wireless_networks("wlan0"),
                 '_modules' : 'drive_list'
             }
 
         elif 'hardware' in frame.data and type(frame.data['hardware']) == dict:
 
-
             if 'drive' in frame.data['hardware']:
-                selected_drive = frame.data['hardware']['drive']
-                os.system("nmcli d wifi connect {0} password {1}".format(frame.data['hardware']['drive'][1]['drives'][int(selected_drive[0])].split(':')[2], frame.data['hardware']['password']))
-                session.steps['internet'] = True
+                selected_wifi_ap = frame.data['hardware']['drive']
+
+                ps = subprocess.Popen(['nmcli','d','wifi', 'connect', frame.data['hardware']['drive'][1]['drives'][int(selected_wifi_ap[0])].split(':')[2], 'password', frame.data['hardware']['password']], subprocess.PIPE)
 
                 yield {
                     'status' : 'complete',

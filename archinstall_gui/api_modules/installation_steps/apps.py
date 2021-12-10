@@ -160,9 +160,7 @@ def on_request(frame):
 
             #session.steps['profil'] = spawn(frame, install_profile, profile_name=frame.data['template'], start_callback=notify_template_started, callback=notify_template_installed, dependency='internet')
 
-
             if frame.data['template'] == "Windows":
-                #mycmd=subprocess.getoutput("bash /usr/share/privastick/scripts/switch-desktop-to-win.sh")
                 subprocess.run("/home/privauser/.config/ps-tools/scripts/switch-desktop-to-win.sh", user="privauser")
 
             

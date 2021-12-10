@@ -426,11 +426,28 @@ def on_request(frame):
             }
         else:
             disk_password = frame.data['disk_password']
-            textfile = open("/home/privauser/.cache/.disk_password", "w")
-            a = textfile.write(disk_password)
-            textfile.close()
 
-            mycmd=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh {0} > /home/privauser/.cache/ps-install.log")
+            #textfile = open("/home/privauser/.cache/.disk_password", "w")
+            #a = textfile.write(disk_password)
+            #textfile.close()
+
+            import pdb; pdb.set_trace()
+
+            ps_pw = subprocess.Popen(['printf','%s\n', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
+
+            output = subprocess.check_output(['passwd', 'privauser'], stdin=ps_pw.stdout)
+
+            ps_pw.wait()
+
+            ps_install=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh > /home/privauser/.cache/ps-install.log")
+
+            ps_reencrypt = subprocess.Popen(['printf','%s\n', 'privaroot', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
+
+            output = subprocess.check_output(['bash', '/usr/share/privastick/scripts/reencrypt.sh'], stdin=ps_reencrypt.stdout)
+
+            ps_reencrypt.wait()
+
+
             yield {
                 'html' : html,
                 'javascript' : javascript,

@@ -294,6 +294,10 @@ def on_request(frame):
 
                 mycmd=subprocess.getoutput("echo '{0}\n{1}' | /usr/share/privastick/scripts/PrivastickVPNSetup".format(vpn_user,vpn_pass)).split('\n')[-1]
 
+                #ps = subprocess.Popen(['printf','%s\n', '{0}'.format(vpn_user), '{0}'.format(vpn_pass)], stdout=subprocess.PIPE)
+
+                #output = subprocess.check_output(['/usr/share/privastick/scripts/PrivastickVPNSetup'], stdin=ps.stdout)
+
                 if 'Falsche Benutzerdaten.' in mycmd:
                     session.information['vpn_active'] = False
                     yield {
@@ -302,6 +306,7 @@ def on_request(frame):
                         'javascript' : javascript,
                         '_modules' : 'vpn'
                     }
+
                 else:
                     session.information['vpn_active'] = True
                     yield {
