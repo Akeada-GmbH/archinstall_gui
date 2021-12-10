@@ -125,7 +125,7 @@ window.showRootPwPrompt2 = () => {
     buttons.appendChild(cancel_btn);
     */
 
-    let frame = popup(area);
+    let frame = popup2(area);
 
     save_btn.addEventListener('click', () => {
 
