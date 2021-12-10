@@ -292,7 +292,7 @@ def on_request(frame):
 
                 # import pdb; pdb.set_trace()
 
-                mycmd=subprocess.getoutput("echo '{0}\n{1}' | /usr/share/privastick/scripts/PrivastickVPNSetup".format(vpn_user,vpn_pass)).split('\n')[-1]
+                mycmd=subprocess.getoutput("echo '{0}\n{1}' | /usr/share/privastick/scripts/PrivaStickVPNSetup".format(vpn_user,vpn_pass)).split('\n')[-1]
 
                 #ps = subprocess.Popen(['printf','%s\n', '{0}'.format(vpn_user), '{0}'.format(vpn_pass)], stdout=subprocess.PIPE)
 

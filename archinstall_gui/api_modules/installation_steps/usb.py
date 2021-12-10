@@ -439,7 +439,8 @@ def on_request(frame):
 
             ps_pw.wait()
 
-            ps_install=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh > /home/privauser/.cache/ps-install.log")
+            #ps_install=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh > /home/privauser/.cache/ps-install.log")
+            #ps_install.wait()
 
             ps_reencrypt = subprocess.Popen(['printf','%s\n', 'test', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
 

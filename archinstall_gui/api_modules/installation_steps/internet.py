@@ -310,6 +310,7 @@ def on_request(frame):
                 selected_wifi_ap = frame.data['hardware']['drive']
 
                 ps = subprocess.Popen(['nmcli','d','wifi', 'connect', frame.data['hardware']['drive'][1]['drives'][int(selected_wifi_ap[0])].split(':')[2], 'password', frame.data['hardware']['password']], subprocess.PIPE)
+                ps.wait()
 
                 yield {
                     'status' : 'complete',
