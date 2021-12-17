@@ -15,7 +15,7 @@
 		<title>PrivaStick Installer</title>
 		<script type="text/javascript">
 			let startpage = 'willkommen';
-			let reboot_step = 'usb'; //# This changes depending on what buttons you press "save" on.
+			let reboot_step = 'finalisieren'; //# This changes depending on what buttons you press "save" on.
 
 			let socket = new slimWebSocket('ws://127.0.0.1');
 			var xhr = null;
@@ -322,8 +322,8 @@
 				socket.subscribe('rechtliches', genericStepLoader)
 				socket.subscribe('internet', genericStepLoader)
 				socket.subscribe('vpn', genericStepLoader)
-				socket.subscribe('apps', genericStepLoader)
-				socket.subscribe('usb', genericStepLoader)
+				// socket.subscribe('apps', genericStepLoader)
+				socket.subscribe('finalisieren', genericStepLoader)
 
 				//socket.subscribe('harddrive', genericStepLoader)
 				//socket.subscribe('encryption', genericStepLoader)

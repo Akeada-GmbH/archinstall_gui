@@ -34,7 +34,7 @@ if 'internet' in session.steps:
 
         <div class="form-area">
             <div class="input-form" id="input-form">
-                <input type="text" id="user" required autocomplete="off" oninput="check_credentials(this.value);"/>
+                <input type="text" id="user" required autocomplete="off"/>
                 <label class="label">
                     <span class="label-content">VPN Nutzername</span>
                 </label>
@@ -43,7 +43,7 @@ if 'internet' in session.steps:
 
         <div class="form-area">
             <div class="input-form" id="input-form">
-                <input type="text" id="password" required autocomplete="off" oninput="check_credentials(this.value);"/>
+                <input type="text" id="password" required autocomplete="off"/>
                 <label class="label">
                     <span class="label-content">VPN Passwort</span>
                 </label>
@@ -59,7 +59,7 @@ if 'internet' in session.steps:
             type="submit">
          Zurück
     </button>
-    <button id="connect" class="btn btn-secondary btn-lg float-right no-click"
+    <button id="connect" class="btn btn-primary btn-lg float-right"
             type="submit">
          Verbinden
     </button>
@@ -94,52 +94,6 @@ while (document.getElementById('popup')) {
     document.getElementById('popup').remove()
 }
 
-function check_credentials(input) {
-		let input1 = document.querySelector('#user').value
-		let input2 = document.querySelector('#password').value
-		if ( input1.includes("@privavpn.de") && input2.length == 10) {
-				var continue_button = document.getElementById("connect");
-				continue_button.classList.remove("no-click");
-				continue_button.classList.remove("btn-secondary");
-				continue_button.classList.add("btn-primary");
-		} else {
-				var continue_button = document.getElementById("connect");
-				continue_button.classList.add("no-click");
-				continue_button.classList.add("btn-secondary");
-				continue_button.classList.remove("btn-primary");
-		}
-}
-
-function check_credentials_2(vpn_username, vpn_password) {
-    var url = "http://vpn-api.01.priva.dev:19999";
-    var data = JSON.stringify({"Username": vpn_username, "Password": vpn_password});
-    // Example POST method implementation:
-async function postData(url = '', data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'no-cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
-}
-postData(url, data)
-  .then(data => {
-    console.log(data); // JSON data parsed by `data.json()` call
-  });
-
-}
-
-
-
 document.querySelector('#connect').addEventListener('click', function() {
     vpn_username = document.querySelector('#user').value;
     vpn_password = document.querySelector('#password').value;
@@ -150,11 +104,10 @@ document.querySelector('#connect').addEventListener('click', function() {
     })
 
     socket.send({
-        '_module' : 'installation_steps/vpn',
-        'continue' : true,
+        '_module' : 'installation_steps/finalisieren',
     })
 
-    console.log(Object.keys('vpn_active'))
+    // console.log(Object.keys('vpn_active'))
 
 	if(vpn_username.length <= 0 ) {
 		// showRootPwPrompt();
@@ -255,14 +208,14 @@ def on_request(frame):
             yield {
                 'next' : 'vpn',
                 'status' : 'success',
-                '_modules' : 'apps'
+                '_modules' : 'finalisieren'
             }
         if 'skip_vpn' in frame.data:
             #session.steps['profiles'] = spawn(frame, stub, dependency='vpn')
             yield {
                 '_modules' : 'vpn',
                 'status' : 'skipped',
-                'next' : 'apps'
+                'next' : 'finalisieren'
             }
             return
 
@@ -290,8 +243,6 @@ def on_request(frame):
                 vpn_user = frame.data['vpn_credentials'][0]
                 vpn_pass = frame.data['vpn_credentials'][1]
 
-                # import pdb; pdb.set_trace()
-
                 mycmd=subprocess.getoutput("echo '{0}\n{1}' | /usr/share/privastick/scripts/PrivaStickVPNSetup".format(vpn_user,vpn_pass)).split('\n')[-1]
 
                 #ps = subprocess.Popen(['printf','%s\n', '{0}'.format(vpn_user), '{0}'.format(vpn_pass)], stdout=subprocess.PIPE)
@@ -311,14 +262,15 @@ def on_request(frame):
                     session.information['vpn_active'] = True
                     yield {
                         'status' : 'complete',
-                        'html' : html,
-                        'javascript' : javascript,
-                        '_modules' : 'vpn'
+                        '_modules' : 'vpn',
                     }
+                    return
 
             elif 'continue' in frame.data:
 
                 yield {
-                    'next' : 'apps',
+                    'status' : 'complete',
+                    'next' : 'vpn',
                     '_modules' : 'vpn' 
                 }
+                return
