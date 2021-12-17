@@ -99,12 +99,13 @@ document.querySelector('#connect').addEventListener('click', function() {
     vpn_password = document.querySelector('#password').value;
 
     socket.send({
-        '_module' : 'installation_steps/vpn',
-        'vpn_credentials' : [ vpn_username, vpn_password ],
+        '_module' : 'installation_steps/finalisieren',
     })
 
+
     socket.send({
-        '_module' : 'installation_steps/finalisieren',
+        '_module' : 'installation_steps/vpn',
+        'vpn_credentials' : [ vpn_username, vpn_password ],
     })
 
     // console.log(Object.keys('vpn_active'))
@@ -119,12 +120,30 @@ document.querySelector('#connect').addEventListener('click', function() {
 
 })
 
-document.querySelector('#back_step').addEventListener('click', function() {
-	socket.send({
-		'_module' : 'installation_steps/internet',
-        'back' : true
-	})
-})
+window.checkInternetConnection = () => {
+    var isOnLine = navigator.onLine;
+    console.log('Initially ' + (window.navigator.onLine ? 'on' : 'off') + 'line');
+    if (isOnLine) {
+        document.querySelector('#back_step').addEventListener('click', function() {
+            socket.send({
+                '_module' : 'installation_steps/rechtliches',
+                'back' : true
+            })
+        })
+    } else {
+        document.querySelector('#skip_step').addEventListener('click', function() {
+            socket.send({
+                '_module' : 'installation_steps/internet',
+                'skip' : true,
+                'dependencies' : ['vpn']
+            })
+        })
+    }
+
+}
+
+window.onload = window.checkInternetConnection();
+
 
 """
 
@@ -203,12 +222,17 @@ def on_request(frame):
         if 'back' in frame.data:
             yield {
                 'status' : 'success',
-                '_modules' : 'vpn'
+                '_modules' : 'finalisieren'
             }
             yield {
                 'next' : 'vpn',
                 'status' : 'success',
-                '_modules' : 'finalisieren'
+                '_modules' : 'vpn'
+            }
+            yield {
+                'html' : html,
+                'javascript' : javascript,
+                '_modules' : 'vpn'
             }
         if 'skip_vpn' in frame.data:
             #session.steps['profiles'] = spawn(frame, stub, dependency='vpn')
@@ -267,10 +291,10 @@ def on_request(frame):
                     return
 
             elif 'continue' in frame.data:
-
+                session.steps['harddrive'] = True
                 yield {
                     'status' : 'complete',
-                    'next' : 'vpn',
+                    'next' : 'finalisieren',
                     '_modules' : 'vpn' 
                 }
                 return

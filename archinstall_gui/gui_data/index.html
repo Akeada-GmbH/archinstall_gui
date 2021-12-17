@@ -5,9 +5,9 @@
 		<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
 		<link rel="stylesheet" href="./bootstrap/bootstrap.min.css">
 		<link rel="stylesheet" href="./style.css">
-	    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+		    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
 		<script type="text/javascript" src="./jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="./popper/popper.min.js"></script>
 		<script type="text/javascript" src="./bootstrap/bootstrap.min.js"></script>
@@ -15,7 +15,7 @@
 		<title>PrivaStick Installer</title>
 		<script type="text/javascript">
 			let startpage = 'willkommen';
-			let reboot_step = 'finalisieren'; //# This changes depending on what buttons you press "save" on.
+			// let reboot_step = 'willkommen'; //# This changes depending on what buttons you press "save" on.
 
 			let socket = new slimWebSocket('ws://127.0.0.1');
 			var xhr = null;
@@ -170,7 +170,7 @@
 				let headerIcon = document.createElement('div');
 				headerIcon.classList = 'noteIcon';
 				let headerText = document.createElement('span');
-				headerText.innerHTML = 'Video';
+				headerText.innerHTML = 'Software-Lizenzen';
 
 				let content = document.createElement('div');
 				content.classList = 'noteBody';
