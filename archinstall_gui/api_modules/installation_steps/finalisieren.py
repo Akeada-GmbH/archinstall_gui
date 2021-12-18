@@ -82,13 +82,43 @@ else:
     html = 'Previous step not completed.'
 
 javascript = """
-console.log("test")
 
 document.querySelector('#back_step').addEventListener('click', function() {
     socket.send({
         '_module' : 'installation_steps/vpn',
         'back' : true
     })
+})
+
+document.querySelector('#finish').addEventListener('click', function() {
+    
+    disk_password = document.querySelector('#password1').value;
+    disk_password_ = document.querySelector('#password2').value;
+
+    if (disk_password == disk_password_) {
+
+        socket.send({
+            '_module' : 'installation_steps/finalisieren',
+            'disk_password' : disk_password
+        })
+
+        var finish_btn = document.getElementById("finish");
+        var back_btn = document.getElementById("back_step");
+
+        finish_btn.classList.remove("btn-primary");
+        finish_btn.classList.add("no-click");
+        finish_btn.classList.add("btn-secondary");
+
+        back_btn.classList.remove("btn-primary");
+        back_btn.classList.add("no-click");
+        back_btn.classList.add("btn-secondary");
+
+        // showRootPwPrompt2();
+
+        document.addEventListener("click", handler, true);
+
+    }
+    
 })
 
 window.showRootPwPrompt2 = () => {
@@ -175,36 +205,6 @@ function handler(e) {
 }
 
 
-document.querySelector('#finish').addEventListener('click', function() {
-    
-    disk_password = document.querySelector('#password1').value;
-    disk_password_ = document.querySelector('#password2').value;
-
-    if (disk_password == disk_password_) {
-
-        socket.send({
-            '_module' : 'installation_steps/finalisieren',
-            'disk_password' : disk_password
-        })
-
-        var finish_btn = document.getElementById("finish");
-        var back_btn = document.getElementById("back_step");
-
-        finish_btn.classList.remove("btn-primary");
-        finish_btn.classList.add("no-click");
-        finish_btn.classList.add("btn-secondary");
-
-        back_btn.classList.remove("btn-primary");
-        back_btn.classList.add("no-click");
-        back_btn.classList.add("btn-secondary");
-
-        // showRootPwPrompt2();
-
-        document.addEventListener("click", handler, true);
-
-    }
-    
-})
 
 function show_license(input) {
 
@@ -230,9 +230,6 @@ function check_credentials_(input) {
 """
 
 javascript_ = """
-console.log("test");
-
-document.addEventListener("click", handler, true);
 
 document.querySelector('#back_step').addEventListener('click', function() {
     console.log("test");
@@ -332,6 +329,8 @@ document.querySelector('#show_licenses').addEventListener('click', function() {
 
 
 document.querySelector('#finish').addEventListener('click', function() {
+
+    console.log("test2");
     
     disk_password = document.querySelector('#password1').value;
     disk_password_ = document.querySelector('#password2').value;
@@ -455,22 +454,12 @@ def strap_in_the_basics_with_encryption(frame, disk_password, drive, worker, hos
 def on_request(frame):
     if '_module' in frame.data and frame.data['_module'] == 'installation_steps/finalisieren':
         if 'back' in frame.data:
-            import pdb; pdb.set_trace()
             yield {
                 'next' : 'vpn',
                 'status' : 'success',
                 '_modules' : 'finalisieren'
             }
             return
-        if not 'harddrive' in session.steps:
-            # session.steps['harddrive'] = True
-            yield {
-                'html' : html,
-                'javascript' : javascript,
-                '_modules' : 'finalisieren'
-            }
-            return
-
         if not 'disk_password' in frame.data:
             yield {
                 'html' : html,
@@ -479,6 +468,10 @@ def on_request(frame):
             }
         else:
             disk_password = frame.data['disk_password']
+
+            ps_install=subprocess.getoutput("bash /usr/share/privastick/scripts/PrivaStickInstaller/install.sh > /boot/install.log")
+
+            ps_install.wait()
 
             if disk_password != "":
                 
@@ -493,12 +486,14 @@ def on_request(frame):
                 output = subprocess.check_output(['bash', '/usr/share/privastick/scripts/PrivaStickReencrypt', 'cryptroot'], stdin=ps_reencrypt.stdout)
 
                 ps_reencrypt.wait()
-            
-            # ps_install=subprocess.getoutput("bash /home/privauser/.config/ps-tools/scripts/install.sh > /home/privauser/.cache/ps-install.log")
 
-            subprocess.run("/usr/share/privastick/scripts/PrivaStickInstaller/install.sh", user="privauser")
-            
-            ps_install.wait()
+            for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: //g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm"]:
+
+                ps_finish=subprocess.getoutput("bash /usr/share/privastick/scripts/PrivaStickResize && sed -i 's/privauser//g' /etc/lightdm/lightdm.conf && sed -i 's/NOPASSWD: //g' /etc/sudoers && passwd -l root && overlay_flush && systemctl restart lightdm")
+
+                ps_install.wait()
+
+                print(ps_install)
 
 
             yield {
