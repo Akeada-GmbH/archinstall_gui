@@ -1,5 +1,5 @@
 import json
-from os.path import isdir, isfile
+import os
 
 from dependencies import archinstall
 from lib.worker import spawn
@@ -467,13 +467,14 @@ def on_request(frame):
                 '_modules' : 'finalisieren'
             }
         else:
+
             disk_password = frame.data['disk_password']
+
+            kill_pykib=subprocess.getoutput("pkill -f pykib")
 
             ps_install=subprocess.getoutput("bash /usr/share/privastick/scripts/PrivaStickInstaller/install.sh > /boot/install.log")
 
-            ps_install.wait()
-
-            if disk_password != "":
+            if disk_password != "" and os.path.exists("/boot/.success"):
                 
                 ps_pw = subprocess.Popen(['printf','%s\n', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
 
