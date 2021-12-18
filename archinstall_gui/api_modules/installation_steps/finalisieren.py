@@ -487,13 +487,11 @@ def on_request(frame):
 
                 ps_reencrypt.wait()
 
-            for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: //g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm"]:
+            for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/i3/xfce/g' /etc/lightdm/lightdm.conf", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: //g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm", "touch /boot/.success"]:
 
-                ps_finish=subprocess.getoutput("bash /usr/share/privastick/scripts/PrivaStickResize && sed -i 's/privauser//g' /etc/lightdm/lightdm.conf && sed -i 's/NOPASSWD: //g' /etc/sudoers && passwd -l root && overlay_flush && systemctl restart lightdm")
+                ps_finish=subprocess.getoutput(c)
 
                 ps_install.wait()
-
-                print(ps_install)
 
 
             yield {
