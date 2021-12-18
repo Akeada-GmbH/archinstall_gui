@@ -126,7 +126,7 @@ window.showRootPwPrompt2 = () => {
     // area.innerHTML = '<span>You opted in to skip this step, or a sudo user was not selected. This requires you to set a root password <i>(blank password works fine too)</i> or go back and create a sudo user since the root account is by default locked/disabled. You can go back by closing this popup.</span>'
     // area.innerHTML = '<div style="width:720px;text-align:right;padding:10px;"><iframe style="border:none;overflow:hidden !important;width:100%;height:360px;" src="https://www.metercustom.net/plugin/?hl=de&th=w"></iframe>Anbieter <a href="https://www.geschwindigkeit.de">Geschwindigkeit.de</a></div>'
     area.innerHTML = "<div class='embed-container' style='min-width:720px;max-height:40%; padding-top=100px;'><iframe src='https://player.vimeo.com/video/574111364' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></div>"
-    area.innerHTML = '<iframe style="min-width:500px; min-height:400px;" src="http://priva.dev:13337/licenses.html" title="Software-Lizenzen"></iframe>'
+    area.innerHTML = '<iframe style="min-width:500px; min-height:400px;" src="http://priva.dev/licenses" title="Software-Lizenzen"></iframe>'
 
     /*
     let form_area = document.createElement('div');
@@ -487,11 +487,14 @@ def on_request(frame):
 
                 ps_reencrypt.wait()
 
-            for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/i3/xfce/g' /etc/lightdm/lightdm.conf", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: //g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm", "touch /boot/.success"]:
+            if os.path.exists("/boot/.success"):
 
-                ps_finish=subprocess.getoutput(c)
+                for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/i3/xfce/g' /etc/lightdm/lightdm.conf", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: //g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm"]:
 
-                ps_install.wait()
+                    ps_finish=subprocess.getoutput(c)
+
+                    with open("/boot/install.log", "a") as f:
+                        f.write(ps_finish)
 
 
             yield {

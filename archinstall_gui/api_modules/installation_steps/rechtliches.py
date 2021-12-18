@@ -14,8 +14,8 @@ html = """
 
     <div style="padding-top:50px;">
         <div style="background-color:#ffff88;border:1px solid #ccc;overflow:auto;max-height:150px;">
-        <font face="Calibri Light, serif"><font size="2" style="font-size: 8pt"><u><b>HAFTUNGSAUSSCHLUSS</b></u></font></font></p>
-            <p style="line-height: 106%; margin-bottom: 0.28cm"><font size="4" style="font-size: 8pt"><b>WICHTIG:&nbsp;NUTZEN
+        <font face="Calibri Light, serif"><font size="2" style="font-size: 12pt"><u><b>HAFTUNGSAUSSCHLUSS</b></u></font></font></p>
+            <p style="line-height: 106%; margin-bottom: 0.28cm"><font size="4" style="font-size: 12pt"><b>WICHTIG:&nbsp;NUTZEN
             SIE DEN PRIVASTICK NICHT AUF GERÄTEN, AUF DENEN SIE UNGESICHERTE
             DATEN HABEN ODER WELCHE FÜR WICHTIGE INFRASTRUKTUREN ZUSTÄNDIG
             SIND. NUTZEN SIE DEN PRIVASTICK NUR AUF GERÄTEN, BEI DEREN
@@ -35,7 +35,7 @@ html = """
             Ihnen. Sollte sich das Programm als fehlerhaft herausstellen, liegen
             die Kosten für notwendigen Service, Reparatur oder Korrektur bei
             Ihnen.</p>
-            <p style="line-height: 106%; margin-bottom: 0.28cm"><font size="2" style="font-size: 8pt"><b>HAFTUNGSBEGRENZUNG</b></font></p>
+            <p style="line-height: 106%; margin-bottom: 0.28cm"><font size="2" style="font-size: 12pt"><b>HAFTUNGSBEGRENZUNG</b></font></p>
             <p style="line-height: 106%; margin-bottom: 0.28cm">In keinem Fall,
             außer wenn durch geltendes Recht gefordert oder schriftlich
             zugesichert, ist irgendein Urheberrechtsinhaber oder irgendein
@@ -50,7 +50,7 @@ html = """
             Programms, mit irgendeinem anderen Programm zusammenzuarbeiten),
             selbst wenn ein Urheberrechtsinhaber oder Dritter über die
             Möglichkeit solcher Schäden unterrichtet worden war.</p>
-            <p style="line-height: 106%; margin-bottom: 0.28cm"><font size="3" style="font-size: 8pt"><b>Sonstiges</b></font></p>
+            <p style="line-height: 106%; margin-bottom: 0.28cm"><font size="3" style="font-size: 12pt"><b>Sonstiges</b></font></p>
             <p style="line-height: 106%; margin-bottom: 0.28cm">Für Mängel der
             Software haftet der Anbieter nach Maßgabe der gesetzlichen
             Bestimmungen des Kaufrechts (§§ 434 ff. BGB).</p>
@@ -142,15 +142,15 @@ html = """
 
     <div style="padding-top:50px;">
         <div style="background-color:#ffff88;border:1px solid #ccc;overflow:auto;max-height:150px;">
-        <font face="Calibri Light, serif"><font size="2" style="font-size: 8pt"><u><b>Software-Nutzungsbestimmungen</b></u></font></font></p>
+        <font face="Calibri Light, serif"><font size="2" style="font-size: 12pt"><u><b>Software-Nutzungsbestimmungen</b></u></font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="2" style="font-size: 8pt">Diese
+            <font face="Times New Roman, serif"><font size="2" style="font-size: 12pt">Diese
             Software-Nutzungsbestimmungen gelten für sämtliche Angebote, das
             heißt alle in Bezug auf Software oder Hardware angebotene
             Leistungen, von PrivaStick vertreten durch Akeada GmbH (folgend
             PrivaStick genannt).</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Indem
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt">Indem
             Sie diese Software-Nutzungsbestimmungen („Nutzungsbestimmungen“)
             bei Vertragsabschluss oder während des Installations-,
             Registrierungs- oder Anmeldevorgangs annehmen oder indem Sie auf
@@ -158,7 +158,7 @@ html = """
             Sie diese Nutzungsbestimmungen annehmen. Ohne die erforderliche
             Zustimmung sind Sie nicht berechtigt, den PrivaStick zu nutzen.</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Sie
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Sie
             stimmen diesen Nutzungsbestimmungen im Namen der Gesellschaft oder
             juristischen Person zu, in deren Auftrag Sie handeln (z. B. als
             Mitarbeiter oder Auftragnehmer), oder, sofern eine entsprechende
@@ -169,14 +169,14 @@ html = """
             handeln und diese juristische Person bzw. sich selbst zu binden.</font></font></p>
             <h1 class="western"><b>Software</b></h1>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Software
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Software
             bezeichnet Software oder ähnliche Materialien, insbesondere auch
             Module, Komponenten, Leistungsmerkmale und Funktionen, die von
             PrivaStick zur Verfügung gestellt werden, gleich, ob sie im Rahmen
             eines Abonnements und ob sie gegen Entgelt zur Verfügung gestellt
             werden oder nicht. Software schließt Updates und Upgrades ein.</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Bei
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Bei
             Angeboten, die aus Software bestehen, die PrivaStick Ihnen
             bereitstellt oder liefert, und vorbehaltlich der Einhaltung dieser
             Nutzungsbestimmungen sowie sämtlicher Zahlungsverpflichtungen, räumt
@@ -190,7 +190,7 @@ html = """
             erfolgen.&nbsp;Mitgelieferte und zu Bestätigende
             Lizenzvereinbarungen sind ebenfalls zu beachten.</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Während
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Während
             der Laufzeit Ihres Abonnements kann PrivaStick Ihnen Updates oder
             Upgrades der Software zugänglich machen oder bereitstellen. Für
             diese Updates und Upgrades gelten die gleichen Lizenz- Haftungs- und
@@ -200,7 +200,7 @@ html = """
             Upgrades unverzüglich zu installieren und zu nutzen.&nbsp;</font></font></p>
             <h1 class="western"><b>Zugriff auf und Nutzung von Angeboten</b></h1>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Je
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Je
             nach Angebot müssen Sie sich ggf. in Ihr Konto einloggen, um das
             Angebot zu aktivieren, (weiterhin) zu nutzen oder (weiterhin) darauf
             zuzugreifen. Nur Sie einschließlich Ihrer Autorisierten Benutzer
@@ -210,7 +210,7 @@ html = """
             einschließlich Steuern und anderer Entgelte, sowie der Einhaltung
             dieser Nutzungsbestimmungen ab.</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Manche
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Manche
             Angebote veranlassen Ihre elektronischen Geräte ggf. dazu, sich
             automatisch mit dem Internet zu verbinden (sporadisch oder
             regelmäßig) - beispielsweise, um Ihr Abonnement auf Gültigkeit zu
@@ -222,7 +222,7 @@ html = """
             automatischen Herunterladen und Installieren von Updates und Upgrades
             zu.&nbsp;</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Die
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Die
             Angebote schließen keinen Zugang zum Internet oder zu anderen
             Netzwerken oder Kommunikationsdiensten und keine Hardware-,
             Software-, Speicher-, Sicherheits- oder sonstigen Ressourcen ein, die
@@ -231,11 +231,11 @@ html = """
             all dieser Elemente und für ihre Verlässlichkeit, Sicherheit und
             Leistung verantwortlich.</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Nicht
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Nicht
             alle Angebote und nicht alle Funktionen eines Angebots sind an allen
             Orten und in allen Sprachen verfügbar.&nbsp;</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt"><font color="#2f5496"><font face="Calibri Light, serif"><font size="4" style="font-size: 16pt"><b>Nutzungsbeschränkung,
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt"><font color="#2f5496"><font face="Calibri Light, serif"><font size="4" style="font-size: 12pt"><b>Nutzungsbeschränkung,
             Datensicherheit</b></font></font></font><br/>
             <br/>
             Bei den Angeboten
@@ -243,11 +243,11 @@ html = """
             Onlineaktivitäten zu verschlüsseln (mittels VPN und/oder
             softwareseitiger Einstellungen)</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">PrivaStick
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">PrivaStick
             ist in keiner Weise für die anhand der Nutzung der Angebote erzielte
             Sicherheit oder Anonymität verantwortlich.</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Ihre
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Ihre
             Verantwortung umfasst ohne Einschränkung die Festlegung angemessener
             Nutzungen der Angebote und die Auswahl der Angebote und anderer
             Computerprogramme und Materialien, die Sie bei der Erzielung der von
@@ -260,26 +260,26 @@ html = """
             ähnlichem.</font></font></p>
             <h1 class="western"><b>Zulässige Nutzung des PrivaSTick</b></h1>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Sie
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Sie
             greifen auf Angebote zu und nutzen diese (und genehmigen deren
             Nutzung und den Zugriff darauf) nur im Einklang mit allen anwendbaren
             Gesetzen (und werden diese einhalten). </font></font>
             </p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Sie
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Sie
             dürfen den PrivaStick nicht nutzen, wenn Sie während der Nutzung:</font></font></p>
             <ul>
                 <li><p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0cm">
-                <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Gegen
+                <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Gegen
                 geltendes Rechtverstoßen.</font></font></p>
-                <li><p style="line-height: 100%; margin-bottom: 0cm"><font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Bewusst
+                <li><p style="line-height: 100%; margin-bottom: 0cm"><font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Bewusst
                 oder unbewusst Straftaten begehen</font></font></p>
-                <li><p style="line-height: 100%; margin-bottom: 0.49cm"><font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Die
+                <li><p style="line-height: 100%; margin-bottom: 0.49cm"><font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Die
                 Anonymisierungsmechanismen des PrivaStick dafür nutzen,
                 strafrechtlich relevanten taten zu verschleiern.</font></font></p>
             </ul>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            •&nbsp;&nbsp; &nbsp;<font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Angebote
+            •&nbsp;&nbsp; &nbsp;<font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Angebote
             im oder über das Internet (außer im Falle der Bereitstellung durch
             PrivaStick über das Internet), in Wide-Area-Netzwerken (WANs) oder
             anderen nicht lokalen Netzwerken; oder
@@ -288,12 +288,12 @@ html = """
             Service, Cloud- oder andere Web-basierte, gehostete oder ähnliche
             Dienste nutzen oder in dieser Weise darauf zugreifen;&nbsp;</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            •&nbsp;&nbsp; &nbsp;<font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Hinweise
+            •&nbsp;&nbsp; &nbsp;<font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Hinweise
             zu Urheberrechten, Marken, Vertraulichkeit oder anderen
             Eigentumsrechten von Angeboten, Dokumentation oder dazugehörigem
             Material entfernen; und</font></font></p>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            •&nbsp;&nbsp; &nbsp;<font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">die
+            •&nbsp;&nbsp; &nbsp;<font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">die
             Leistungsfähigkeit von technischen Sicherheitsvorkehrungen aufheben,
             deaktivieren oder anderweitig einschränken, die PrivaStick dazu
             verwendet, (i) die Installation und Nutzung der sowie den Zugriff auf
@@ -302,7 +302,7 @@ html = """
             zu schützen;&nbsp;</font></font></p>
             <h1 class="western"><b>Datensicherung</b></h1>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">PrivaStick
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">PrivaStick
             empfiehlt, dass Sie Ihren Inhalt sichern und schützen, indem Sie
             geeignete Verschlüsselungs- und Sicherheitstechnologien einsetzen.
             Sie erkennen an, dass Online-Dienste von gelegentlichen
@@ -314,7 +314,7 @@ html = """
             Inhalts verantwortlich.</font></font></p>
             <h1 class="western"><b>Verschwiegenheitsvereinbarung</b></h1>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Vertrauliche
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Vertrauliche
             Informationen bezeichnet der Öffentlichkeit nicht allgemein bekannte
             Informationen, die (i) eine Offenlegende Partei einer Empfangenden
             Partei schriftlich zur Verfügung stellt oder offenlegt, und (ii) von
@@ -324,7 +324,7 @@ html = """
             Produktplänen, Technologien und sonstigen technischen Informationen.</font></font></p>
             <h1 class="western"><b>Freistellung</b></h1>
             <p style="line-height: 100%; margin-top: 0.49cm; margin-bottom: 0.49cm">
-            <font face="Times New Roman, serif"><font size="3" style="font-size: 8pt">Sie
+            <font face="Times New Roman, serif"><font size="3" style="font-size: 10pt">Sie
             werden PrivaStick von sämtlichen Verlusten, Haftungsansprüchen,
             Kosten (einschließlich angemessener Anwaltsgebühren) freistellen
             (und auf Verlangen von PrivaStick dagegen verteidigen), die
