@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 from dependencies import archinstall
 from lib.worker import spawn
@@ -469,10 +470,12 @@ def on_request(frame):
         else:
 
             disk_password = frame.data['disk_password']
+            
+            time.sleep(1)
 
             kill_pykib=subprocess.getoutput("pkill -f pykib")
 
-            ps_install=subprocess.Popen(["bash", "/usr/share/privastick/scripts/PrivaStickInstaller/install.sh"], stdout=subprocess.PIPE)
+            ps_install=subprocess.Popen(["bash", "/usr/share/privastick/scripts/PrivaStickInstaller/install"], stdout=subprocess.PIPE)
 
             ps_install.wait()
 
@@ -484,7 +487,7 @@ def on_request(frame):
 
                 ps_pw.wait()
 
-                ps_reencrypt = subprocess.Popen(['printf','%s\n', 'test', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
+                ps_reencrypt = subprocess.Popen(['printf','%s\n', 'privaroot', '{0}'.format(disk_password), '{0}'.format(disk_password)], stdout=subprocess.PIPE)
 
                 output = subprocess.check_output(['bash', '/usr/share/privastick/scripts/PrivaStickReencrypt', 'cryptroot'], stdin=ps_reencrypt.stdout)
 
@@ -492,13 +495,15 @@ def on_request(frame):
 
             if os.path.exists("/boot/.success"):
 
-                for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/i3/xfce/g' /etc/lightdm/lightdm.conf", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: //g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm"]:
+                for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/i3/xfce/g' /etc/lightdm/lightdm.conf", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: ALL/\/usr\/share\/privastick\/scripts\/misc\/install-app,\/usr\/share\/privastick\/scripts\/misc\/remove-app/g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm"]:
 
+                    if c == "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf" and disk_password == "":
+                        continue
+                        
                     ps_finish=subprocess.getoutput(c)
 
                     with open("/boot/install.log", "a") as f:
                         f.write(ps_finish)
-
 
             yield {
                 'html' : html,
