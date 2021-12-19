@@ -24,15 +24,15 @@ if True:
                 Die Sicherheit Ihrer Daten hängt von der Stärke Ihres Passworts ab.
             </div>
         </div>
-
+        <!--
         <div class="warning">
             <div class="warningHeader"><div class="noteIcon"></div><span>Warnung</span></div>
             <div class="noteBody">
-                <!--The password prompt while unlocking a drive is always <div class="inlineCode">en_US.UTF-8</div>, keep this in mind if you choose a password with special characters, that when prompted during boot for a disk password, the passphrase will be inputted with US keyboard layout<a target="_blank" href="https://bbs.archlinux.org/viewtopic.php?id=173506">[1]</a>.-->
                 ACHTUNG: Falls Sie Ihr Passwort verlieren sollten, gibt es im Falle eines starken Passworts keinen Weg wie Sie Ihre Daten retten können. Notieren Sie sich Ihr Passwort und bewahren Sie es an einem sicheren Ort auf.
             </div>
         </div>
-
+        -->
+        
     <span style="padding-top:5px;">
     Sie können die Software-Lizenzen
     <button id="show_licenses" onclick="show_license(this);">
