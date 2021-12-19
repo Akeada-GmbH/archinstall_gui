@@ -472,7 +472,9 @@ def on_request(frame):
 
             kill_pykib=subprocess.getoutput("pkill -f pykib")
 
-            ps_install=subprocess.getoutput("bash /usr/share/privastick/scripts/PrivaStickInstaller/install.sh > /boot/install.log")
+            ps_install=subprocess.Popen(["bash", "/usr/share/privastick/scripts/PrivaStickInstaller/install.sh"], stdout=subprocess.PIPE)
+
+            ps_install.wait()
 
             if disk_password != "" and os.path.exists("/boot/.success"):
                 
