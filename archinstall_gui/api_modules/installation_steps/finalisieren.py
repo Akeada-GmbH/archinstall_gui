@@ -495,7 +495,7 @@ def on_request(frame):
 
             if os.path.exists("/boot/.success"):
 
-                for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/i3/xfce/g' /etc/lightdm/lightdm.conf", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: ALL/\/usr\/share\/privastick\/scripts\/misc\/install-app,\/usr\/share\/privastick\/scripts\/misc\/remove-app/g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm"]:
+                for c in ["bash /usr/share/privastick/scripts/PrivaStickResize", "sed -i 's/i3/xfce/g' /etc/lightdm/lightdm.conf", "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf", "sed -i 's/NOPASSWD: ALL/NOPASSWD: \/usr\/share\/privastick\/scripts\/misc\/install-app,\/usr\/share\/privastick\/scripts\/misc\/remove-app/g' /etc/sudoers", "passwd -l root", "overlay_flush", "systemctl restart lightdm"]:
 
                     if c == "sed -i 's/privauser//g' /etc/lightdm/lightdm.conf" and disk_password == "":
                         continue
