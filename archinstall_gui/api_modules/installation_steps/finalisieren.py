@@ -21,7 +21,7 @@ if True:
             <div class="noteBody">
                 <!--Disk encryption is optional, but if you value your local data <i>(including web browser history and logins)</i>, it's strongly
                 adviced that disk encryption is enabled. The minimum system requirements for disk encryption increases to <div class="inlineCode">1 GB</div> of RAM.-->
-                Die Sicherheit Ihrer Daten hängt von der Stärke Ihres Passworts ab.
+                Vergeben Sie ein starkes Passwort, um fremden Zugriff zu verhindern.
             </div>
         </div>
         <!--
