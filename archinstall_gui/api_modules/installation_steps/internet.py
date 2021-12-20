@@ -58,7 +58,7 @@ html = """
 javascript = """
 window.showWifiPwPrompt = (selected_drive, data) => {
     let area = document.createElement('div');
-	area.innerHTML = '<span>Bitte geben Sie Ihr WLAN-Passwort ein <i>(falls vorhanden)</i> und klicken Sie anschließend auf <b>Verbinden</b></span>'
+    area.innerHTML = '<span>Bitte geben Sie Ihr WLAN-Passwort ein <i>(falls vorhanden)</i> und klicken Sie anschließend auf <b>Verbinden</b></span>'
 
     let form_area = document.createElement('div');
     form_area.classList = 'form-area';
@@ -311,9 +311,9 @@ def on_request(frame):
 
                 ps = subprocess.Popen(['nmcli','d','wifi', 'connect', frame.data['hardware']['drive'][1]['drives'][int(selected_wifi_ap[0])].split(':')[2], 'password', frame.data['hardware']['password']], subprocess.PIPE)
                 ps.wait()
-		
-		if frame.data['hardware']['password'] == "":
-		    ps = subprocess.Popen(['nmcli','d','wifi', 'connect', frame.data['hardware']['drive'][1]['drives'][int(selected_wifi_ap[0])].split(':')[2]], subprocess.PIPE)
+        
+                if frame.data['hardware']['password'] == "":
+                    ps = subprocess.Popen(['nmcli','d','wifi', 'connect', frame.data['hardware']['drive'][1]['drives'][int(selected_wifi_ap[0])].split(':')[2]], subprocess.PIPE)
                     ps.wait()
 
                 session.steps['internet'] = True
