@@ -313,7 +313,7 @@ def on_request(frame):
                 ps.wait()
 		
 		if frame.data['hardware']['password'] == "":
-		    ps = subprocess.Popen(['nmcli','d','wifi', 'connect', frame.data['hardware']['drive'][1]['drives'][int(selected_wifi_ap[0])].split(':')[2], subprocess.PIPE)
+		    ps = subprocess.Popen(['nmcli','d','wifi', 'connect', frame.data['hardware']['drive'][1]['drives'][int(selected_wifi_ap[0])].split(':')[2]], subprocess.PIPE)
                     ps.wait()
 
                 session.steps['internet'] = True
